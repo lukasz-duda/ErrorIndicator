@@ -1,0 +1,11 @@
+{
+  "errorIndicatorTitle": {
+    "message": "Error indicator",
+    "description": "The title of error indicator."
+  },
+
+  "removeErrorsButton": {
+    "message": "Remove errors",
+    "description": "Label of button for removing errors."
+  }
+}

@@ -1,0 +1,40 @@
+{
+
+  "manifest_version": 2,
+  "name": "Error indicator",
+  "description": "Overwrites global error handler to provide common place for reporting errors from all opened pages.",
+  "version": "1.2",
+  "default_locale": "en",
+
+  "permissions": [ ],
+
+  "icons": {
+    "48": "icons/error.svg"
+  },
+
+  "browser_action": {
+    "browser_style": false,
+    "default_popup": "Report.html",
+    "default_icon": {
+      "16": "icons/ok.svg"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "ErrorDetails.js", "ErrorObserver.js", "content-script.js" ],
+      "run_at": "document_start" // Required to indicate loading page errors.
+    },
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "ErrorDetails.js", "content-script.js" ],
+      "run_at": "document_end" // Required to overwrite global error handler.
+    }
+  ],
+
+  "background": {
+    "scripts": [ "ErrorIndicator.js", "background.js" ]
+  }
+
+}
