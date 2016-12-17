@@ -33,11 +33,23 @@ function Report(container, browser) {
 
     me.addError = function (errorList, error) {
         var listItem = document.createElement('LI');
-        var positionDelimiter = ':';
-        listItem.innerText = error.message
-            + positionDelimiter + error.lineNumber
-            + positionDelimiter + error.columnNumber;
+
+        var errorMessage = document.createElement('SPAN');
+        errorMessage.classList.add('error-message');
+        errorMessage.textContent = error.message;
+        listItem.appendChild(errorMessage);
+
+        var errorSource = document.createElement('SPAN');
+        errorSource.classList.add('error-source');
+        errorSource.textContent = me.formatErrorSource(error);
+        listItem.appendChild(errorSource);
+
         errorList.appendChild(listItem);
+    }
+
+    me.formatErrorSource = function (error) {
+        var delimiter = ':';
+        return error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
     }
 
     me.removeErrors = function () {

@@ -1,9 +1,7 @@
-﻿/// <reference path="../References.js" />
-
-var errorObserver = null;
+﻿var errorObserver = null;
 var errorIndicator = null
-var report = null;
 var reportContainer = null;
+var report = null;
 
 QUnit.module('ErrorIndicator', {
     beforeEach: function () {
@@ -15,7 +13,7 @@ QUnit.module('ErrorIndicator', {
 });
 
 QUnit.test('adds error to report', function (assert) {
-    fakeWindow.onerror('message 1', 'source', 1, 2);
+    fakeWindow.onerror('message 1', 'source 1', 1, 2);
 
     report.show();
 
@@ -23,9 +21,16 @@ QUnit.test('adds error to report', function (assert) {
     assert.equal(errorList.length, 1);
     var listItems = errorList[0].childNodes;
     assert.equal(listItems.length, 1);
-    assert.equal(listItems[0].textContent, 'message 1:1:2');
-    assert.equal(listItems[0].nodeName, 'LI');
+    assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
 });
+
+function assertErrorListItem(assert, listItem, expectedSource, expectedMessage) {
+    assert.equal(listItem.nodeName, 'LI');
+    var errorSource = listItem.querySelector('.error-source');
+    assert.equal(errorSource.textContent, expectedSource);
+    var errorMessage = listItem.querySelector('.error-message');
+    assert.equal(errorMessage.textContent, expectedMessage);
+}
 
 QUnit.test('adds errors to report', function (assert) {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
@@ -37,10 +42,8 @@ QUnit.test('adds errors to report', function (assert) {
     assert.equal(errorList.length, 1);
     var listItems = errorList[0].childNodes;
     assert.equal(listItems.length, 2);
-    assert.equal(listItems[0].textContent, 'message 1:1:2');
-    assert.equal(listItems[0].nodeName, 'LI');
-    assert.equal(listItems[1].textContent, 'message 2:3:4');
-    assert.equal(listItems[1].nodeName, 'LI');
+    assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
+    assertErrorListItem(assert, listItems[1], 'source 2:3:4', 'message 2');
 });
 
 QUnit.test('removes errors from report', function (assert) {
@@ -78,7 +81,7 @@ QUnit.test('shows remove errors button', function (assert) {
     assert.equal(removeErrorsButton.innerText, 'removeErrorsButtonTranslation');
 });
 
-QUnit.test('without any error doesn\' indicate error', function (assert) {
+QUnit.test('without any error doesn\'t indicate error', function (assert) {
     var iconDetails = fakeBrowser.browserAction.getIcon();
     assert.equal(iconDetails.path, 'icons/ok.svg');
     var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
@@ -98,7 +101,7 @@ QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
     assert.equal(badgeTextDetails.text, '');
 });
 
-QUnit.test('translate title', function (assert) {
+QUnit.test('translates title', function (assert) {
     var titleDetails = fakeBrowser.browserAction.getTitle();
     assert.equal(titleDetails.title, 'errorIndicatorTitleTranslation');
 });
