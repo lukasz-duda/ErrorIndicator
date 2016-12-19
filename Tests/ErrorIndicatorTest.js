@@ -112,3 +112,13 @@ QUnit.test('translates title', function (assert) {
     var titleDetails = fakeBrowser.browserAction.getTitle();
     assert.equal(titleDetails.title, 'errorIndicatorTitleTranslation');
 });
+
+QUnit.test('shows header', function (assert) {
+    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    fakeWindow.onerror('message 2', 'source 2', 3, 4);
+
+    report.show();
+
+    var header = reportContainer.querySelector('.title');
+    assert.equal(header.textContent, 'indicatedErrorsCount2Translation');
+});

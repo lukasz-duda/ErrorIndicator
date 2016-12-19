@@ -52,8 +52,9 @@ var fakeBrowser = {
     },
 
     i18n: {
-        getMessage: function (messageName) {
-            return messageName + "Translation";
+        getMessage: function (messageName, substitusion) {
+            var substitutionText = substitusion || '';
+            return messageName + substitutionText + "Translation";
         }
     }
 };

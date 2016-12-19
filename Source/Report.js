@@ -12,6 +12,7 @@ function Report(container, browser) {
     }
 
     me.showErrors = function (errors) {
+        me.showHeader(errors.length);
         var errorList = document.createElement('OL');
         errorList.classList.add('error-list');
 
@@ -22,9 +23,17 @@ function Report(container, browser) {
 
         me.container.appendChild(errorList);
 
-        if (errors.length > 0) {
+        var hasErrors = errors.length > 0;
+        if (hasErrors) {
             me.showRemoveErrorsButton();
         }
+    }
+
+    me.showHeader = function (errorsCount) {
+        var header = document.createElement('SPAN');
+        header.classList.add('title');
+        header.textContent = me.browser.i18n.getMessage('indicatedErrorsCount', errorsCount);
+        me.container.appendChild(header);
     }
 
     me.addError = function (errorList, error) {
