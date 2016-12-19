@@ -6,17 +6,9 @@ function Report(container, browser) {
     me.browser = browser;
 
     me.show = function () {
-        me.showRemoveErrorsButton();
         var action = { name: 'getErrors' };
         var sending = me.browser.runtime.sendMessage(action);
         sending.then(me.showErrors);
-    }
-
-    me.showRemoveErrorsButton = function () {
-        var removeErrorsButton = document.createElement('button');
-        removeErrorsButton.innerText = me.browser.i18n.getMessage('removeErrorsButton');
-        removeErrorsButton.onclick = me.removeErrors;
-        me.container.appendChild(removeErrorsButton);
     }
 
     me.showErrors = function (errors) {
@@ -29,6 +21,10 @@ function Report(container, browser) {
         }
 
         me.container.appendChild(errorList);
+
+        if (errors.length > 0) {
+            me.showRemoveErrorsButton();
+        }
     }
 
     me.addError = function (errorList, error) {
@@ -50,6 +46,14 @@ function Report(container, browser) {
     me.formatErrorSource = function (error) {
         var delimiter = ':';
         return error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
+    }
+
+    me.showRemoveErrorsButton = function () {
+        var removeErrorsButton = document.createElement('button');
+        removeErrorsButton.classList.add('remove-errors-button');
+        removeErrorsButton.innerText = me.browser.i18n.getMessage('removeErrorsButton');
+        removeErrorsButton.onclick = me.removeErrors;
+        me.container.appendChild(removeErrorsButton);
     }
 
     me.removeErrors = function () {

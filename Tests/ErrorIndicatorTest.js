@@ -77,8 +77,15 @@ QUnit.test('shows remove errors button', function (assert) {
 
     report.show();
 
-    var removeErrorsButton = reportContainer.firstChild;
+    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
     assert.equal(removeErrorsButton.innerText, 'removeErrorsButtonTranslation');
+});
+
+QUnit.test('without errors doesn\'t show remove errors button', function (assert) {
+    report.show();
+
+    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
+    assert.equal(null, removeErrorsButton);
 });
 
 QUnit.test('without any error doesn\'t indicate error', function (assert) {
