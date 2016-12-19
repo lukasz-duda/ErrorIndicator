@@ -13,7 +13,7 @@
   },
 
   "browser_action": {
-    "browser_style": false,
+    "browser_style": true,
     "default_popup": "Report.html",
     "default_icon": {
       "16": "icons/ok.svg"
