@@ -1,7 +1,18 @@
-{
+﻿{
   "errorIndicatorTitle": {
     "message": "Error indicator",
     "description": "The title of error indicator."
+  },
+
+  "indicatedErrorsCount": {
+    "message": "Indicated $COUNT$ errors",
+    "description": "Tells the user how many errors have been identified.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
   },
 
   "removeErrorsButton": {

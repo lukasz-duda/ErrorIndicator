@@ -19,13 +19,12 @@ QUnit.test('adds error to report', function (assert) {
 
     var errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].childNodes;
+    var listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
     assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
 });
 
 function assertErrorListItem(assert, listItem, expectedSource, expectedMessage) {
-    assert.equal(listItem.nodeName, 'LI');
     var errorSource = listItem.querySelector('.error-source');
     assert.equal(errorSource.textContent, expectedSource);
     var errorMessage = listItem.querySelector('.error-message');
@@ -40,7 +39,7 @@ QUnit.test('adds errors to report', function (assert) {
 
     var errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].childNodes;
+    var listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 2);
     assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
     assertErrorListItem(assert, listItems[1], 'source 2:3:4', 'message 2');
@@ -119,6 +118,6 @@ QUnit.test('shows header', function (assert) {
 
     report.show();
 
-    var header = reportContainer.querySelector('.title');
+    var header = reportContainer.querySelector('.header-text');
     assert.equal(header.textContent, 'indicatedErrorsCount2Translation');
 });

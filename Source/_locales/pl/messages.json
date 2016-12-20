@@ -4,6 +4,17 @@
     "description": "Tytuł wskaźnika błędów."
   },
 
+  "indicatedErrorsCount": {
+    "message": "Zidentyfikowano $COUNT$ błędów",
+    "description": "Informuje użytkownika o liczbie zidentyfikowanych błędów.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+
   "removeErrorsButton": {
     "message": "Usuń błędy",
     "description": "Etykieta przycisku do usuwania listy błędów."

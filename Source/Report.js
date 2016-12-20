@@ -8,46 +8,79 @@ function Report(container, browser) {
     me.show = function () {
         var action = { name: 'getErrors' };
         var sending = me.browser.runtime.sendMessage(action);
-        sending.then(me.showErrors);
+        sending.then(me.reportErrors);
     }
 
-    me.showErrors = function (errors) {
-        me.showHeader(errors.length);
-        var errorList = document.createElement('OL');
-        errorList.classList.add('error-list');
+    me.reportErrors = function (errors) {
+        var errorsCount = errors.length;
 
-        for (var i = 0; i < errors.length; i++) {
-            var error = errors[i];
-            me.addError(errorList, error);
-        }
+        me.showHeader(errorsCount);
+        me.showErrors(errors);
 
-        me.container.appendChild(errorList);
-
-        var hasErrors = errors.length > 0;
+        var hasErrors = errorsCount > 0;
         if (hasErrors) {
             me.showRemoveErrorsButton();
         }
     }
 
     me.showHeader = function (errorsCount) {
-        var header = document.createElement('SPAN');
-        header.classList.add('title');
-        header.textContent = me.browser.i18n.getMessage('indicatedErrorsCount', errorsCount);
-        me.container.appendChild(header);
+        var headerSection = document.createElement('DIV');
+        headerSection.classList.add('panel-section');
+        headerSection.classList.add('panel-section-header');
+
+        var headerIcon = document.createElement('DIV');
+        headerIcon.classList.add('icon-section-header');
+        headerSection.appendChild(headerIcon);
+
+        var headerText = document.createElement('DIV');
+        headerText.classList.add('header-text');
+        headerText.classList.add('text-section-header');
+        headerText.textContent = me.browser.i18n.getMessage('indicatedErrorsCount', errorsCount);
+        headerSection.appendChild(headerText);
+
+        me.container.appendChild(headerSection);
     }
 
-    me.addError = function (errorList, error) {
-        var listItem = document.createElement('LI');
+    me.showErrors = function (errors) {
+        var errorList = document.createElement('DIV');
+        errorList.classList.add('panel-section');
+        errorList.classList.add('panel-section-list');
+        errorList.classList.add('error-list');
 
-        var errorMessage = document.createElement('SPAN');
+        for (var i = 0; i < errors.length; i++) {
+            var error = errors[i];
+            me.showError(errorList, error);
+        }
+
+        me.container.appendChild(errorList);
+    }
+
+    me.showError = function (errorList, error) {
+        var listItem = document.createElement('DIV');
+        listItem.classList.add('error-list-item');
+        listItem.classList.add('panel-list-item');
+
+        var listItemIcon = document.createElement('DIV');
+        listItemIcon.classList.add('icon');
+        listItem.appendChild(listItemIcon);
+
+        var listItemText = document.createElement('DIV');
+        listItemText.classList.add('text');
+
+        var errorMessage = document.createElement('DIV');
         errorMessage.classList.add('error-message');
         errorMessage.textContent = error.message;
-        listItem.appendChild(errorMessage);
+        listItemText.appendChild(errorMessage);
 
-        var errorSource = document.createElement('SPAN');
+        var errorSource = document.createElement('DIV');
         errorSource.classList.add('error-source');
         errorSource.textContent = me.formatErrorSource(error);
-        listItem.appendChild(errorSource);
+        listItemText.appendChild(errorSource);
+        listItem.appendChild(listItemText);
+
+        var shortcut = document.createElement('DIV');
+        shortcut.classList.add('text-shortcut');
+        listItem.appendChild(shortcut);
 
         errorList.appendChild(listItem);
     }
@@ -58,19 +91,34 @@ function Report(container, browser) {
     }
 
     me.showRemoveErrorsButton = function () {
-        var removeErrorsButton = document.createElement('button');
+        var footer = document.createElement('DIV');
+        footer.classList.add('panel-section');
+        footer.classList.add('panel-section-footer');
+
+        var removeErrorsButton = document.createElement('DIV');
+        removeErrorsButton.classList.add('panel-section-footer-button');
         removeErrorsButton.classList.add('remove-errors-button');
         removeErrorsButton.innerText = me.browser.i18n.getMessage('removeErrorsButton');
         removeErrorsButton.onclick = me.removeErrors;
-        me.container.appendChild(removeErrorsButton);
+        footer.appendChild(removeErrorsButton);
+
+        me.container.appendChild(footer);
     }
 
     me.removeErrors = function () {
         var action = { name: 'removeErrors' };
-        browser.runtime.sendMessage(action);
-        var errorList = me.container.querySelector('OL');
-        while (errorList.firstChild) {
-            errorList.removeChild(errorList.firstChild);
+        var sending = browser.runtime.sendMessage(action);
+        sending.then(me.refresh)
+    }
+
+    me.refresh = function () {
+        me.clearContainer();
+        me.show();
+    }
+
+    me.clearContainer = function () {
+        while (me.container.firstChild) {
+            me.container.removeChild(me.container.firstChild);
         }
     }
 }
