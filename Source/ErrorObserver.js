@@ -10,8 +10,13 @@ function ErrorObserver(window, browser) {
         me.browser.runtime.sendMessage(action);
     }
 
-    me.window.onerror = function (message, source, lineNumber, columnNumber) {
-        var error = new ErrorDetails(message, source, lineNumber, columnNumber);
+    me.window.addEventListener('error', function (event) {
+        var error = new ErrorDetails(
+            event.message,
+            event.filename,
+            event.lineno,
+            event.colno);
+
         me.addError(error);
-    }
+    });
 }

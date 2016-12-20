@@ -24,12 +24,7 @@
     {
       "matches": [ "<all_urls>" ],
       "js": [ "ErrorDetails.js", "ErrorObserver.js", "content-script.js" ],
-      "run_at": "document_start" // Required to indicate loading page errors.
-    },
-    {
-      "matches": [ "<all_urls>" ],
-      "js": [ "ErrorDetails.js", "content-script.js" ],
-      "run_at": "document_end" // Required to overwrite global error handler.
+      "run_at": "document_start"
     }
   ],
 
