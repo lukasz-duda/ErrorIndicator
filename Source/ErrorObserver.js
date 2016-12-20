@@ -8,7 +8,7 @@ function ErrorObserver(window, browser) {
     me.addError = function (error) {
         var action = { name: 'addError', args: error };
         me.browser.runtime.sendMessage(action);
-    }
+    };
 
     me.window.addEventListener('error', function (event) {
         var error = new ErrorDetails(

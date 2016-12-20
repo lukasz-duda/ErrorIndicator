@@ -19,7 +19,7 @@ function FakeBrowser() {
                 me.runtime.messageListener(message, sender, resolve);
             });
         }
-    },
+    };
 
     me.browserAction = {
         iconDetails: null,
@@ -51,12 +51,12 @@ function FakeBrowser() {
         getTitle: function () {
             return fakeBrowser.browserAction.titleDetails;
         }
-    },
+    };
 
     me.i18n = {
         getMessage: function (messageName, substitusion) {
             var substitutionText = substitusion || '';
             return messageName + substitutionText + "Translation";
         }
-    }
+    };
 };

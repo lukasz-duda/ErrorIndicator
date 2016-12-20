@@ -9,7 +9,7 @@ function Report(container, browser) {
         var action = { name: 'getErrors' };
         var sending = me.browser.runtime.sendMessage(action);
         sending.then(me.reportErrors);
-    }
+    };
 
     me.reportErrors = function (errors) {
         var errorsCount = errors.length;
@@ -21,7 +21,7 @@ function Report(container, browser) {
         if (hasErrors) {
             me.showRemoveErrorsButton();
         }
-    }
+    };
 
     me.showHeader = function (errorsCount) {
         var headerSection = document.createElement('DIV');
@@ -39,7 +39,7 @@ function Report(container, browser) {
         headerSection.appendChild(headerText);
 
         me.container.appendChild(headerSection);
-    }
+    };
 
     me.showErrors = function (errors) {
         var errorList = document.createElement('DIV');
@@ -53,7 +53,7 @@ function Report(container, browser) {
         }
 
         me.container.appendChild(errorList);
-    }
+    };
 
     me.showError = function (errorList, error) {
         var listItem = document.createElement('DIV');
@@ -83,12 +83,12 @@ function Report(container, browser) {
         listItem.appendChild(shortcut);
 
         errorList.appendChild(listItem);
-    }
+    };
 
     me.formatErrorSource = function (error) {
         var delimiter = ':';
         return error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
-    }
+    };
 
     me.showRemoveErrorsButton = function () {
         var footer = document.createElement('DIV');
@@ -103,22 +103,22 @@ function Report(container, browser) {
         footer.appendChild(removeErrorsButton);
 
         me.container.appendChild(footer);
-    }
+    };
 
     me.removeErrors = function () {
         var action = { name: 'removeErrors' };
         var sending = browser.runtime.sendMessage(action);
         sending.then(me.refresh)
-    }
+    };
 
     me.refresh = function () {
         me.clearContainer();
         me.show();
-    }
+    };
 
     me.clearContainer = function () {
         while (me.container.firstChild) {
             me.container.removeChild(me.container.firstChild);
         }
-    }
+    };
 }
