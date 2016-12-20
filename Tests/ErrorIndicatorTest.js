@@ -1,10 +1,16 @@
-﻿var errorObserver = null;
+﻿/// <reference path="../References.js" />
+
+var fakeWindow = null;
+var fakeBrowser = null;
+var errorObserver = null;
 var errorIndicator = null
 var reportContainer = null;
 var report = null;
 
 QUnit.module('ErrorIndicator', {
     beforeEach: function () {
+        fakeWindow = new FakeWindow();
+        fakeBrowser = new FakeBrowser();
         errorObserver = new ErrorObserver(fakeWindow, fakeBrowser);
         errorIndicator = new ErrorIndicator(fakeBrowser);
         reportContainer = document.getElementById('qunit-fixture');
