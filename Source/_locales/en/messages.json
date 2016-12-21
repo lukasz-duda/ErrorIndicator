@@ -4,9 +4,9 @@
     "description": "The title of error indicator."
   },
 
-  "indicatedErrorsCount": {
-    "message": "Indicated $COUNT$ errors",
-    "description": "Tells the user how many errors have been identified.",
+  "detectedErrorsCount": {
+    "message": "Detected $COUNT$ errors",
+    "description": "Tells the user how many errors have been detected.",
     "placeholders": {
       "count": {
         "content": "$1",

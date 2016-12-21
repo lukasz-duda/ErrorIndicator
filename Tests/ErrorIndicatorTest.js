@@ -125,5 +125,5 @@ QUnit.test('shows header', function (assert) {
     report.show();
 
     var header = reportContainer.querySelector('.header-text');
-    assert.equal(header.textContent, 'indicatedErrorsCount2Translation');
+    assert.equal(header.textContent, 'detectedErrorsCount2Translation');
 });

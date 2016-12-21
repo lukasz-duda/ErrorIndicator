@@ -4,9 +4,9 @@
     "description": "Tytuł wskaźnika błędów."
   },
 
-  "indicatedErrorsCount": {
-    "message": "Zidentyfikowano $COUNT$ błędów",
-    "description": "Informuje użytkownika o liczbie zidentyfikowanych błędów.",
+  "detectedErrorsCount": {
+    "message": "Wykryto $COUNT$ błędów",
+    "description": "Informuje użytkownika o liczbie wykrytych błędów.",
     "placeholders": {
       "count": {
         "content": "$1",

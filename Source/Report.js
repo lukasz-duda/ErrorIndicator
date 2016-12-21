@@ -35,7 +35,7 @@ function Report(container, browser) {
         var headerText = document.createElement('DIV');
         headerText.classList.add('header-text');
         headerText.classList.add('text-section-header');
-        headerText.textContent = me.browser.i18n.getMessage('indicatedErrorsCount', errorsCount);
+        headerText.textContent = me.browser.i18n.getMessage('detectedErrorsCount', errorsCount);
         headerSection.appendChild(headerText);
 
         me.container.appendChild(headerSection);
