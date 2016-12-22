@@ -1,6 +1,6 @@
 ﻿/// <reference path="../References.js" />
 
-function WarningDetails(message) {
-    this.messageType = 'warning';
+function UserErrorDetails(message) {
+    this.messageType = 'user-error';
     this.message = message;
 }

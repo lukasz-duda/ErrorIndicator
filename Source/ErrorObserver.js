@@ -20,13 +20,13 @@ function ErrorObserver(window, browser) {
         me.browser.runtime.sendMessage(action);
     };
 
-    me.consoleErrorHandler = me.window.console.error;
+    me.handleConsoleError = me.window.console.error;
 
-    me.newConsoleErrorHandler = function (message) {
-        var error = new WarningDetails(message);
-        me.addError(error);
-        me.consoleErrorHandler(message);
+    me.addUserError = function (message) {
+        var userError = new UserErrorDetails(message);
+        me.addError(userError);
+        me.handleConsoleError(message);
     };
 
-    exportFunction(me.newConsoleErrorHandler, window.console, { defineAs: 'error' });
+    exportFunction(me.addUserError, window.console, { defineAs: 'error' });
 }

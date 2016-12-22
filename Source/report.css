@@ -3,5 +3,5 @@
 .error-list-item { height: auto; padding-top: 5px; padding-bottom: 4px; }
 .error-list-item:hover { padding-top: 4px; padding-bottom: 3px; }
 .error-message { color: #d92015; }
-.warning-message { color: #d99100; }
+.user-error-message { color: #d99100; }
 .error-source { font-weight: normal; }

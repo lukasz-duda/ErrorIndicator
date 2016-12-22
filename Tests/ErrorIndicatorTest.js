@@ -128,7 +128,7 @@ QUnit.test('shows header', function (assert) {
     assert.equal(header.textContent, 'detectedErrorsCount2Translation');
 });
 
-QUnit.test('reports console error message as warning', function (assert) {
+QUnit.test('reports console error message as user error', function (assert) {
     fakeWindow.console.error('console error message 1');
 
     report.show();
@@ -137,8 +137,8 @@ QUnit.test('reports console error message as warning', function (assert) {
     assert.equal(errorList.length, 1);
     var listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
-    var warning = listItems[0].querySelector('.warning-message');
-    assert.equal(warning.textContent, 'console error message 1');
+    var userError = listItems[0].querySelector('.user-error-message');
+    assert.equal(userError.textContent, 'console error message 1');
 });
 
 QUnit.test('doesn\'t remove default console error handler', function (assert) {
