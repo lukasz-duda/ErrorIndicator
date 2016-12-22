@@ -24,22 +24,34 @@ function Report(container, browser) {
     };
 
     me.showHeader = function (errorsCount) {
+        var headerSection = me.makeHeaderSection();
+
+        me.addHeaderIcon(headerSection);
+        me.addHeaderText(headerSection, errorsCount)
+
+        me.container.appendChild(headerSection);
+    };
+
+    me.makeHeaderSection = function () {
         var headerSection = document.createElement('DIV');
         headerSection.classList.add('panel-section');
         headerSection.classList.add('panel-section-header');
+        return headerSection;
+    }
 
+    me.addHeaderIcon = function (headerSection) {
         var headerIcon = document.createElement('DIV');
         headerIcon.classList.add('icon-section-header');
         headerSection.appendChild(headerIcon);
+    }
 
+    me.addHeaderText = function (headerSection, errorsCount) {
         var headerText = document.createElement('DIV');
         headerText.classList.add('header-text');
         headerText.classList.add('text-section-header');
         headerText.textContent = me.browser.i18n.getMessage('detectedErrorsCount', errorsCount);
         headerSection.appendChild(headerText);
-
-        me.container.appendChild(headerSection);
-    };
+    }
 
     me.showErrors = function (errors) {
         var errorList = document.createElement('DIV');
@@ -56,7 +68,7 @@ function Report(container, browser) {
     };
 
     me.showError = function (errorList, error) {
-        var listItem = me.makeListItem();
+        var listItem = me.makeErrorListItem();
 
         me.addErrorIcon(listItem);
         me.addErrorText(listItem, error);
@@ -65,7 +77,7 @@ function Report(container, browser) {
         errorList.appendChild(listItem);
     };
 
-    me.makeListItem = function () {
+    me.makeErrorListItem = function () {
         var listItem = document.createElement('DIV');
         listItem.classList.add('error-list-item');
         listItem.classList.add('panel-list-item');
