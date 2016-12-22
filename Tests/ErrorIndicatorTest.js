@@ -62,6 +62,16 @@ QUnit.test('removes errors from report', function (assert) {
     assert.equal(errorList[0].childNodes.length, 0);
 });
 
+QUnit.test('without error source defined shows empty source', function (assert) {
+    fakeWindow.onerror('message 1');
+
+    report.show();
+
+    var listItem = reportContainer.querySelector('.error-list-item');
+    var errorSource = listItem.querySelector('.error-source');
+    assert.equal(errorSource.textContent, '');
+});
+
 QUnit.test('indicates error', function (assert) {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
 

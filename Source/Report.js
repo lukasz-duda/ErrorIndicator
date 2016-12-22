@@ -110,7 +110,9 @@ function Report(container, browser) {
 
     me.formatErrorSource = function (error) {
         var delimiter = ':';
-        return error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
+        var hasErrorSource = (error.source != null);
+        var errorSourceDescription = error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
+        return (hasErrorSource) ? errorSourceDescription : '';
     };
 
     me.addErrorShortcut = function (listItem) {
