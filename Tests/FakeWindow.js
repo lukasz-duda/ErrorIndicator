@@ -5,6 +5,12 @@ function FakeWindow() {
 
     me.errorListeners = [];
 
+    me.addEventListener = function (type, listener) {
+        if (type == 'error') {
+            fakeWindow.errorListeners.push(listener);
+        }
+    };
+
     me.onerror = function (message, source, lineNumber, columnNumber) {
         for (var i = 0; i < fakeWindow.errorListeners.length; i++) {
             var errorListener = fakeWindow.errorListeners[i];
@@ -18,9 +24,11 @@ function FakeWindow() {
         }
     };
 
-    me.addEventListener = function (type, listener) {
-        if (type == 'error') {
-            fakeWindow.errorListeners.push(listener);
+    me.consoleErrors = [];
+
+    me.console = {
+        error: function (message) {
+            me.consoleErrors.push(message);
         }
-    };
+    }
 }

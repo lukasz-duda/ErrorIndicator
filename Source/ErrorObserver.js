@@ -5,11 +5,6 @@ function ErrorObserver(window, browser) {
     me.window = window;
     me.browser = browser;
 
-    me.addError = function (error) {
-        var action = { name: 'addError', args: error };
-        me.browser.runtime.sendMessage(action);
-    };
-
     me.window.addEventListener('error', function (event) {
         var error = new ErrorDetails(
             event.message,
@@ -19,4 +14,17 @@ function ErrorObserver(window, browser) {
 
         me.addError(error);
     });
+
+    me.addError = function (error) {
+        var action = { name: 'addError', args: error };
+        me.browser.runtime.sendMessage(action);
+    };
+
+    me.consoleErrorHandler = me.window.console.error;
+
+    me.window.console.error = function (message) {
+        var error = new WarningDetails(message);
+        me.addError(error);
+        me.consoleErrorHandler(message);
+    };
 }

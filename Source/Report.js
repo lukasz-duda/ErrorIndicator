@@ -56,38 +56,67 @@ function Report(container, browser) {
     };
 
     me.showError = function (errorList, error) {
-        var listItem = document.createElement('DIV');
-        listItem.classList.add('error-list-item');
-        listItem.classList.add('panel-list-item');
+        var listItem = me.makeListItem();
 
-        var listItemIcon = document.createElement('DIV');
-        listItemIcon.classList.add('icon');
-        listItem.appendChild(listItemIcon);
-
-        var listItemText = document.createElement('DIV');
-        listItemText.classList.add('text');
-
-        var errorMessage = document.createElement('DIV');
-        errorMessage.classList.add('error-message');
-        errorMessage.textContent = error.message;
-        listItemText.appendChild(errorMessage);
-
-        var errorSource = document.createElement('DIV');
-        errorSource.classList.add('error-source');
-        errorSource.textContent = me.formatErrorSource(error);
-        listItemText.appendChild(errorSource);
-        listItem.appendChild(listItemText);
-
-        var shortcut = document.createElement('DIV');
-        shortcut.classList.add('text-shortcut');
-        listItem.appendChild(shortcut);
+        me.addErrorIcon(listItem);
+        me.addErrorText(listItem, error);
+        me.addErrorShortcut(listItem);
 
         errorList.appendChild(listItem);
     };
 
+    me.makeListItem = function () {
+        var listItem = document.createElement('DIV');
+        listItem.classList.add('error-list-item');
+        listItem.classList.add('panel-list-item');
+        return listItem;
+    };
+
+    me.addErrorIcon = function (listItem) {
+        var listItemIcon = document.createElement('DIV');
+        listItemIcon.classList.add('icon');
+        listItem.appendChild(listItemIcon);
+    };
+
+    me.addErrorText = function (listItem, error) {
+        var listItemText = me.makeListItemText();
+
+        me.addErrorMessage(listItemText, error);
+        me.addErrorSource(listItemText, error);
+
+        listItem.appendChild(listItemText);
+    };
+
+    me.makeListItemText = function () {
+        var listItemText = document.createElement('DIV');
+        listItemText.classList.add('text');
+        return listItemText;
+    }
+
+    me.addErrorMessage = function (listItemText, error) {
+        var errorMessage = document.createElement('DIV');
+        var messageClass = error.messageType + '-message';
+        errorMessage.classList.add(messageClass);
+        errorMessage.textContent = error.message;
+        listItemText.appendChild(errorMessage);
+    }
+
+    me.addErrorSource = function (listItemText, error) {
+        var errorSource = document.createElement('DIV');
+        errorSource.classList.add('error-source');
+        errorSource.textContent = me.formatErrorSource(error);
+        listItemText.appendChild(errorSource);
+    }
+
     me.formatErrorSource = function (error) {
         var delimiter = ':';
         return error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
+    };
+
+    me.addErrorShortcut = function (listItem) {
+        var shortcut = document.createElement('DIV');
+        shortcut.classList.add('text-shortcut');
+        listItem.appendChild(shortcut);
     };
 
     me.showRemoveErrorsButton = function () {

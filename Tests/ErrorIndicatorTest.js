@@ -127,3 +127,23 @@ QUnit.test('shows header', function (assert) {
     var header = reportContainer.querySelector('.header-text');
     assert.equal(header.textContent, 'detectedErrorsCount2Translation');
 });
+
+QUnit.test('reports console error message as warning', function (assert) {
+    fakeWindow.console.error('console error message 1');
+
+    report.show();
+
+    var errorList = reportContainer.getElementsByClassName('error-list');
+    assert.equal(errorList.length, 1);
+    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    assert.equal(listItems.length, 1);
+    var warning = listItems[0].querySelector('.warning-message');
+    assert.equal(warning.textContent, 'console error message 1');
+});
+
+QUnit.test('doesn\'t remove default console error handler', function (assert) {
+    fakeWindow.console.error('console error message 1');
+
+    assert.equal(fakeWindow.consoleErrors.length, 1);
+    assert.equal(fakeWindow.consoleErrors[0], 'console error message 1');
+});
