@@ -22,9 +22,11 @@ function ErrorObserver(window, browser) {
 
     me.consoleErrorHandler = me.window.console.error;
 
-    me.window.console.error = function (message) {
+    me.newConsoleErrorHandler = function (message) {
         var error = new WarningDetails(message);
         me.addError(error);
         me.consoleErrorHandler(message);
     };
+
+    exportFunction(me.newConsoleErrorHandler, window.console, { defineAs: 'error' });
 }

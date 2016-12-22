@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": [ "<all_urls>" ],
-      "js": [ "ErrorDetails.js", "ErrorObserver.js", "content-script.js" ],
+      "js": [ "ErrorDetails.js", "WarningDetails.js", "ErrorObserver.js", "content-script.js" ],
       "run_at": "document_start"
     }
   ],

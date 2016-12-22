@@ -32,3 +32,7 @@ function FakeWindow() {
         }
     }
 }
+
+function exportFunction(exportedFunction, targetScope, options) {
+    targetScope[options.defineAs] = exportedFunction;
+}
