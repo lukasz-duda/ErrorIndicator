@@ -17,7 +17,7 @@ function FakeWindow() {
 
             var error = {
                 message: message,
-                source: fileName,
+                fileName: source,
                 lineNumber: lineNumber,
                 columnNumber: columnNumber
             }
@@ -29,8 +29,13 @@ function FakeWindow() {
     me.consoleErrors = [];
 
     me.console = {
-        error: function (message) {
-            me.consoleErrors.push(message);
+        error: function (message, substitutionString1, substitutionString2) {
+            var consoleError = {
+                message: message,
+                substitutionString1: substitutionString1,
+                substitutionString2: substitutionString2
+            }
+            me.consoleErrors.push(consoleError);
         }
     }
 }

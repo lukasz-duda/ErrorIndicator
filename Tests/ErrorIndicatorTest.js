@@ -152,8 +152,11 @@ QUnit.test('reports console error message as user error', function (assert) {
 });
 
 QUnit.test('doesn\'t remove default console error handler', function (assert) {
-    fakeWindow.console.error('console error message 1');
+    fakeWindow.console.error('console error message 1', '2', '3');
 
     assert.equal(fakeWindow.consoleErrors.length, 1);
-    assert.equal(fakeWindow.consoleErrors[0], 'console error message 1');
+    var consoleError = fakeWindow.consoleErrors[0];
+    assert.equal(consoleError.message, 'console error message 1');
+    assert.equal(consoleError.substitutionString1, '2');
+    assert.equal(consoleError.substitutionString2, '3');
 });

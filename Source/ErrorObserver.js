@@ -26,7 +26,8 @@ function ErrorObserver(window, browser) {
     me.addUserError = function (message) {
         var userError = new UserErrorDetails(message);
         me.addError(userError);
-        me.handleConsoleError(message);
+        var args = Array.from(arguments);
+        me.handleConsoleError.apply(this, args);
     };
 
     exportFunction(me.addUserError, window.console, { defineAs: 'error' });
