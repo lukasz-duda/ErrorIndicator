@@ -14,12 +14,14 @@ function FakeWindow() {
     me.onerror = function (message, source, lineNumber, columnNumber) {
         for (var i = 0; i < fakeWindow.errorListeners.length; i++) {
             var errorListener = fakeWindow.errorListeners[i];
-            var event = {
+
+            var error = {
                 message: message,
-                filename: source,
-                lineno: lineNumber,
-                colno: columnNumber
+                source: fileName,
+                lineNumber: lineNumber,
+                columnNumber: columnNumber
             }
+            var event = { error: error };
             errorListener(event);
         }
     };

@@ -6,11 +6,12 @@ function ErrorObserver(window, browser) {
     me.browser = browser;
 
     me.window.addEventListener('error', function (event) {
+        var eventError = event.error;
         var error = new ErrorDetails(
-            event.message,
-            event.filename,
-            event.lineno,
-            event.colno);
+            eventError.message,
+            eventError.fileName,
+            eventError.lineNumber,
+            eventError.columnNumber);
 
         me.addError(error);
     });
