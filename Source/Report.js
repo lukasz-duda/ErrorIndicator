@@ -13,14 +13,11 @@ function Report(container, browser) {
 
     me.reportErrors = function (errors) {
         var errorsCount = errors.length;
+        var hasErrors = errorsCount > 0;
 
         me.showHeader(errorsCount);
         me.showErrors(errors);
-
-        var hasErrors = errorsCount > 0;
-        if (hasErrors) {
-            me.showRemoveErrorsButton();
-        }
+        me.showFooter(hasErrors);
     };
 
     me.showHeader = function (errorsCount) {
@@ -157,19 +154,41 @@ function Report(container, browser) {
         listItem.appendChild(shortcut);
     };
 
-    me.showRemoveErrorsButton = function () {
+    me.showFooter = function (hasError) {
+        var footer = me.makeFooter();
+
+        me.addSwitchButton(footer);
+
+        if (hasError) {
+            me.addRemoveErrorsButton(footer);
+        }
+
+        me.container.appendChild(footer);
+    };
+
+    me.makeFooter = function () {
         var footer = document.createElement('DIV');
         footer.classList.add('panel-section');
         footer.classList.add('panel-section-footer');
+        return footer;
+    };
 
+    me.addSwitchButton = function (footer) {
+        var switchButton = document.createElement('DIV');
+        switchButton.classList.add('panel-section-footer-button');
+        switchButton.classList.add('switch-button');
+        switchButton.innerText = me.browser.i18n.getMessage('switchOffButton');
+        footer.appendChild(switchButton);
+    };
+
+    me.addRemoveErrorsButton = function (footer) {
         var removeErrorsButton = document.createElement('DIV');
         removeErrorsButton.classList.add('panel-section-footer-button');
         removeErrorsButton.classList.add('remove-errors-button');
+        removeErrorsButton.classList.add('default');
         removeErrorsButton.innerText = me.browser.i18n.getMessage('removeErrorsButton');
         removeErrorsButton.onclick = me.removeErrors;
         footer.appendChild(removeErrorsButton);
-
-        me.container.appendChild(footer);
     };
 
     me.removeErrors = function () {

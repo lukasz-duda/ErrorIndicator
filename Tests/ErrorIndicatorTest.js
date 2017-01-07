@@ -179,3 +179,10 @@ QUnit.test('shows error timestamps', function (assert) {
     var secondErrorTime = listItems[1].querySelector('.error-time-stamp');
     assert.equal(secondErrorTime.textContent, '2001-05-06 13:07:08');
 });
+
+QUnit.test('shows switch off button', function (assert) {
+    report.show();
+
+    var switchButton = reportContainer.querySelector('.switch-button');
+    assert.equal(switchButton.textContent, 'switchOffButtonTranslation')
+});

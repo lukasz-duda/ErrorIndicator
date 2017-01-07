@@ -15,6 +15,11 @@
     }
   },
 
+  "switchOffButton": {
+    "message": "Wyłącz",
+    "description": "Etykieta przycisku do wyłączenia."
+  },
+
   "removeErrorsButton": {
     "message": "Usuń błędy",
     "description": "Etykieta przycisku do usuwania listy błędów."
