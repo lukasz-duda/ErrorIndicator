@@ -117,18 +117,21 @@ function Report(container, browser) {
     me.addErrorTimeStamp = function (listItemText, error) {
         var errorTimeStamp = document.createElement('DIV');
         errorTimeStamp.classList.add('error-time-stamp');
-
-        var year = error.timeStamp.getFullYear();
-        var month = me.zeroPadded(error.timeStamp.getMonth() + 1);
-        var day = me.zeroPadded(error.timeStamp.getDate());
-        var hour = me.zeroPadded(error.timeStamp.getHours());
-        var minute = me.zeroPadded(error.timeStamp.getMinutes());
-        var second = me.zeroPadded(error.timeStamp.getSeconds());
-
-        errorTimeStamp.textContent = year + '-' + month + '-' + day
-            + ' ' + hour + ':' + minute + ':' + second;
+        errorTimeStamp.textContent = me.formatTimeStamp(error.timeStamp);
         listItemText.appendChild(errorTimeStamp);
     };
+
+    me.formatTimeStamp = function (timeStamp) {
+        var year = timeStamp.getFullYear();
+        var month = me.zeroPadded(timeStamp.getMonth() + 1);
+        var day = me.zeroPadded(timeStamp.getDate());
+        var hour = me.zeroPadded(timeStamp.getHours());
+        var minute = me.zeroPadded(timeStamp.getMinutes());
+        var second = me.zeroPadded(timeStamp.getSeconds());
+
+        return year + '-' + month + '-' + day
+            + ' ' + hour + ':' + minute + ':' + second;
+    }
 
     me.zeroPadded = function (value) {
         return (value < 10) ? '0' + value : value.toString();
