@@ -4,4 +4,4 @@
 .error-list-item:hover { padding-top: 4px; padding-bottom: 3px; }
 .error-message { color: #d92015; }
 .user-error-message { color: #d99100; }
-.error-source { font-weight: normal; }
+.error-time-stamp, .error-source { font-weight: normal; }

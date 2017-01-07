@@ -94,6 +94,7 @@ function Report(container, browser) {
         var listItemText = me.makeListItemText();
 
         me.addErrorMessage(listItemText, error);
+        me.addErrorTimeStamp(listItemText, error);
         me.addErrorSource(listItemText, error);
 
         listItem.appendChild(listItemText);
@@ -103,7 +104,7 @@ function Report(container, browser) {
         var listItemText = document.createElement('DIV');
         listItemText.classList.add('text');
         return listItemText;
-    }
+    };
 
     me.addErrorMessage = function (listItemText, error) {
         var errorMessage = document.createElement('DIV');
@@ -111,14 +112,34 @@ function Report(container, browser) {
         errorMessage.classList.add(messageClass);
         errorMessage.textContent = error.message;
         listItemText.appendChild(errorMessage);
-    }
+    };
+
+    me.addErrorTimeStamp = function (listItemText, error) {
+        var errorTimeStamp = document.createElement('DIV');
+        errorTimeStamp.classList.add('error-time-stamp');
+
+        var year = error.timeStamp.getFullYear();
+        var month = me.zeroPadded(error.timeStamp.getMonth() + 1);
+        var day = me.zeroPadded(error.timeStamp.getDate());
+        var hour = me.zeroPadded(error.timeStamp.getHours());
+        var minute = me.zeroPadded(error.timeStamp.getMinutes());
+        var second = me.zeroPadded(error.timeStamp.getSeconds());
+
+        errorTimeStamp.textContent = year + '-' + month + '-' + day
+            + ' ' + hour + ':' + minute + ':' + second;
+        listItemText.appendChild(errorTimeStamp);
+    };
+
+    me.zeroPadded = function (value) {
+        return (value < 10) ? '0' + value : value.toString();
+    };
 
     me.addErrorSource = function (listItemText, error) {
         var errorSource = document.createElement('DIV');
         errorSource.classList.add('error-source');
         errorSource.textContent = me.formatErrorSource(error);
         listItemText.appendChild(errorSource);
-    }
+    };
 
     me.formatErrorSource = function (error) {
         var delimiter = ':';

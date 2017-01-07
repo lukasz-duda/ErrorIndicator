@@ -1,3 +1,4 @@
 ﻿/// <reference path="../References.js" />
 
-new ErrorIndicator(browser);
+var dateProvider = new DateProvider();
+new ErrorIndicator(browser, dateProvider);

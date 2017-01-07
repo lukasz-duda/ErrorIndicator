@@ -3,6 +3,7 @@
 var fakeWindow = null;
 var fakeBrowser = null;
 var errorObserver = null;
+var dateProvider = null;
 var errorIndicator = null
 var reportContainer = null;
 var report = null;
@@ -12,7 +13,8 @@ QUnit.module('ErrorIndicator', {
         fakeWindow = new FakeWindow();
         fakeBrowser = new FakeBrowser();
         errorObserver = new ErrorObserver(fakeWindow, fakeBrowser);
-        errorIndicator = new ErrorIndicator(fakeBrowser);
+        dateProvider = new DateProviderStub();
+        errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
         reportContainer = document.getElementById('qunit-fixture');
         report = new Report(reportContainer, fakeBrowser);
     }
@@ -159,4 +161,21 @@ QUnit.test('doesn\'t remove default console error handler', function (assert) {
     assert.equal(consoleError.message, 'console error message 1');
     assert.equal(consoleError.substitutionString1, '2');
     assert.equal(consoleError.substitutionString2, '3');
+});
+
+QUnit.test('shows error timestamps', function (assert) {
+    dateProvider.setUpNow(new Date(2000, 0, 2, 12, 3, 4));
+    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    dateProvider.setUpNow(new Date(2001, 4, 6, 13, 7, 8));
+    fakeWindow.console.error('console error message 1');
+
+    report.show();
+
+    var errorList = reportContainer.querySelector('.error-list');
+    var listItems = errorList.querySelectorAll('.error-list-item');
+    assert.equal(listItems.length, 2);
+    var firstErrorTime = listItems[0].querySelector('.error-time-stamp');
+    assert.equal(firstErrorTime.textContent, '2000-01-02 12:03:04');
+    var secondErrorTime = listItems[1].querySelector('.error-time-stamp');
+    assert.equal(secondErrorTime.textContent, '2001-05-06 13:07:08');
 });

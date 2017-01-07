@@ -1,8 +1,9 @@
 ﻿/// <reference path="../References.js" />
 
-function ErrorIndicator(browser) {
+function ErrorIndicator(browser, dateProvider) {
     var me = this;
     me.browser = browser;
+    me.dateProvider = dateProvider;
 
     me.errors = [];
 
@@ -11,7 +12,15 @@ function ErrorIndicator(browser) {
         respond(response);
     };
 
-    me.addError = function (error) {
+    me.addError = function (errorDetails) {
+        var error = {
+            message: errorDetails.message,
+            messageType: errorDetails.messageType,
+            timeStamp: me.dateProvider.now(),
+            source: errorDetails.source,
+            lineNumber: errorDetails.lineNumber,
+            columnNumber: errorDetails.columnNumber
+        };
         me.errors.push(error);
         me.refresh();
     };
