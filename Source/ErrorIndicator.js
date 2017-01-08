@@ -67,6 +67,10 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.enabled = true;
 
+    me.switchOn = function () {
+        me.enabled = true;
+    }
+
     me.browser.runtime.onMessage.addListener(me.handleMessage);
     var title = browser.i18n.getMessage('errorIndicatorTitle');
     me.browser.browserAction.setTitle({ title: title });

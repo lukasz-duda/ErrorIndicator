@@ -183,9 +183,13 @@ QUnit.test('shows error timestamps', function (assert) {
 QUnit.test('shows switch off button', function (assert) {
     report.show();
 
+    assertSwitchOffButton(assert);
+});
+
+function assertSwitchOffButton(assert) {
     var switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOffButtonTranslation')
-});
+}
 
 QUnit.test('after switching off shows switch on button', function (assert) {
     report.show();
@@ -194,4 +198,13 @@ QUnit.test('after switching off shows switch on button', function (assert) {
 
     var switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOnButtonTranslation')
+});
+
+QUnit.test('after switching off and on shows switch off button', function (assert) {
+    report.show();
+
+    report.switchOff();
+    report.switchOn();
+
+    assertSwitchOffButton(assert);
 });

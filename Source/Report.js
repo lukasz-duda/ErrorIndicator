@@ -201,6 +201,12 @@ function Report(container, browser) {
         footer.appendChild(switchButton);
     };
 
+    me.switchOn = function () {
+        var action = { name: 'switchOn' };
+        var sending = browser.runtime.sendMessage(action);
+        sending.then(me.refresh)
+    }
+
     me.addRemoveErrorsButton = function (footer) {
         var removeErrorsButton = document.createElement('DIV');
         removeErrorsButton.classList.add('panel-section-footer-button');
