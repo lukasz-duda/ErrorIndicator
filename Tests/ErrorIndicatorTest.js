@@ -210,7 +210,7 @@ QUnit.test('after switching off and on shows switch off button', function (asser
 });
 
 QUnit.test('after switching off removes errors', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    setUpError();
 
     report.switchOff();
 
@@ -219,6 +219,10 @@ QUnit.test('after switching off removes errors', function (assert) {
     var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
     assert.equal(badgeTextDetails.text, '');
 });
+
+function setUpError() {
+    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+}
 
 QUnit.test('after switching off changes icon to disabled', function (assert) {
     report.switchOff();
@@ -233,4 +237,12 @@ QUnit.test('after switching off and on shows changes icon to enabled', function 
 
     var iconDetails = fakeBrowser.browserAction.getIcon();
     assert.equal(iconDetails.path, 'icons/ok.svg');
+});
+
+QUnit.test('after switching off new errors are ignored', function (assert) {
+    report.switchOff();
+
+    setUpError();
+
+    assert.ok(!errorIndicator.hasErrors());
 });

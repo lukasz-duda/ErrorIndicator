@@ -13,6 +13,10 @@ function ErrorIndicator(browser, dateProvider) {
     };
 
     me.addError = function (errorDetails) {
+        if (me.disabled()) {
+            return;
+        }
+
         var error = {
             message: errorDetails.message,
             messageType: errorDetails.messageType,
@@ -24,6 +28,10 @@ function ErrorIndicator(browser, dateProvider) {
         me.errors.push(error);
         me.refresh();
     };
+
+    me.disabled = function () {
+        return !me.enabled;
+    }
 
     me.refresh = function () {
         if (me.hasErrors()) {
