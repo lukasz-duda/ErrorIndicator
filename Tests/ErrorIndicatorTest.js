@@ -54,8 +54,8 @@ QUnit.test('adds errors to report', function (assert) {
 });
 
 QUnit.test('removes errors from report', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
-    fakeWindow.onerror('message 2', 'source 2', 3, 4);
+    simulateError();
+    simulateError();
 
     report.show();
     report.removeErrors();
@@ -75,22 +75,30 @@ QUnit.test('without error source defined shows empty source', function (assert) 
 });
 
 QUnit.test('indicates error', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    simulateError();
 
     var iconDetails = fakeBrowser.browserAction.getIcon();
     assert.equal(iconDetails.path, 'icons/error.svg');
 });
 
-QUnit.test('shows error count', function (assert) {
+function simulateError() {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
-    fakeWindow.onerror('message 2', 'source 2', 3, 4);
+}
 
-    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
-    assert.equal(badgeTextDetails.text, '2');
+QUnit.test('shows error count', function (assert) {
+    simulateError();
+    simulateError();
+
+    assertBadgeText(assert, '2');
 });
 
+function assertBadgeText(assert, expectedText) {
+    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
+    assert.equal(badgeTextDetails.text, expectedText);
+}
+
 QUnit.test('shows remove errors button', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    simulateError();
 
     report.show();
 
@@ -106,23 +114,29 @@ QUnit.test('without errors doesn\'t show remove errors button', function (assert
 });
 
 QUnit.test('without any error doesn\'t indicate error', function (assert) {
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, 'icons/ok.svg');
-    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
-    assert.equal(badgeTextDetails.text, '');
+    assertOkIcon(assert);
+    assertBadgeText(assert, '');
 });
 
+function assertOkIcon(assert) {
+    assertIcon(assert, 'icons/ok.svg');
+}
+
+function assertIcon(assert, iconPath) {
+    var iconDetails = fakeBrowser.browserAction.getIcon();
+    assert.equal(iconDetails.path, iconPath);
+
+}
+
 QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
-    fakeWindow.onerror('message 2', 'source 2', 3, 4);
+    simulateError();
+    simulateError();
 
     report.show();
     report.removeErrors();
 
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, 'icons/ok.svg');
-    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
-    assert.equal(badgeTextDetails.text, '');
+    assertOkIcon(assert);
+    assertBadgeText(assert, '');
 });
 
 QUnit.test('translates title', function (assert) {
@@ -131,8 +145,8 @@ QUnit.test('translates title', function (assert) {
 });
 
 QUnit.test('shows header', function (assert) {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
-    fakeWindow.onerror('message 2', 'source 2', 3, 4);
+    simulateError();
+    simulateError();
 
     report.show();
 
@@ -165,9 +179,9 @@ QUnit.test('doesn\'t remove default console error handler', function (assert) {
 
 QUnit.test('shows error timestamps', function (assert) {
     dateProvider.setUpNow(new Date(2000, 0, 2, 12, 3, 4));
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
+    simulateError();
     dateProvider.setUpNow(new Date(2001, 4, 6, 13, 7, 8));
-    fakeWindow.console.error('console error message 1');
+    simulateError();
 
     report.show();
 
@@ -200,7 +214,7 @@ QUnit.test('after switching off shows switch on button', function (assert) {
     assert.equal(switchButton.textContent, 'switchOnButtonTranslation')
 });
 
-QUnit.test('after switching off and on shows switch off button', function (assert) {
+QUnit.test('after switching off and switching on shows switch off button', function (assert) {
     report.show();
 
     report.switchOff();
@@ -210,19 +224,14 @@ QUnit.test('after switching off and on shows switch off button', function (asser
 });
 
 QUnit.test('after switching off removes errors', function (assert) {
-    setUpError();
+    simulateError();
 
     report.switchOff();
 
     var listItems = reportContainer.querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 0);
-    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
-    assert.equal(badgeTextDetails.text, '');
+    assertBadgeText(assert, '');
 });
-
-function setUpError() {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
-}
 
 QUnit.test('after switching off changes icon to disabled', function (assert) {
     report.switchOff();
@@ -235,14 +244,13 @@ QUnit.test('after switching off and on shows changes icon to enabled', function 
     report.switchOff();
     report.switchOn();
 
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, 'icons/ok.svg');
+    assertOkIcon(assert);
 });
 
 QUnit.test('after switching off new errors are ignored', function (assert) {
     report.switchOff();
 
-    setUpError();
+    simulateError();
 
     assert.ok(!errorIndicator.hasErrors());
 });
