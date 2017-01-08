@@ -154,14 +154,14 @@ function Report(container, browser) {
     me.showFooter = function (report) {
         var footer = me.makeFooter();
 
-        if (report.hasError) {
-            me.addRemoveErrorsButton(footer);
-        }
-
         if (report.indicatorEnabled) {
             me.addSwitchOffButton(footer);
         } else {
             me.addSwitchOnButton(footer);
+        }
+
+        if (report.hasError) {
+            me.addRemoveErrorsButton(footer);
         }
 
         me.container.appendChild(footer);
