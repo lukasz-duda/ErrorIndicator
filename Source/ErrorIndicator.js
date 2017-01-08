@@ -47,14 +47,25 @@ function ErrorIndicator(browser, dateProvider) {
         me.browser.browserAction.setBadgeText({ text: '' });
     };
 
-    me.getErrors = function () {
-        return me.errors;
+    me.getReport = function () {
+        return {
+            hasError: me.errors.length > 0,
+            errorsCount: me.errors.length,
+            errors: me.errors,
+            indicatorEnabled: me.enabled
+        };
     };
 
     me.removeErrors = function () {
         me.errors = [];
         me.refresh();
     };
+
+    me.switchOff = function () {
+        me.enabled = false;
+    };
+
+    me.enabled = true;
 
     me.browser.runtime.onMessage.addListener(me.handleMessage);
     var title = browser.i18n.getMessage('errorIndicatorTitle');

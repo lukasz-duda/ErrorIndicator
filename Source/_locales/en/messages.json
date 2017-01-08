@@ -20,6 +20,11 @@
     "description": "Label of button for switching off."
   },
 
+  "switchOnButton": {
+    "message": "Switch on",
+    "description": "Label of button for switching on."
+  },
+
   "removeErrorsButton": {
     "message": "Remove errors",
     "description": "Label of button for removing errors."

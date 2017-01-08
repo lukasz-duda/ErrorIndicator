@@ -186,3 +186,12 @@ QUnit.test('shows switch off button', function (assert) {
     var switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOffButtonTranslation')
 });
+
+QUnit.test('after switching off shows switch on button', function (assert) {
+    report.show();
+
+    report.switchOff();
+
+    var switchButton = reportContainer.querySelector('.switch-button');
+    assert.equal(switchButton.textContent, 'switchOnButtonTranslation')
+});

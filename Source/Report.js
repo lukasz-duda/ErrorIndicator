@@ -6,18 +6,15 @@ function Report(container, browser) {
     me.browser = browser;
 
     me.show = function () {
-        var action = { name: 'getErrors' };
+        var action = { name: 'getReport' };
         var sending = me.browser.runtime.sendMessage(action);
         sending.then(me.reportErrors);
     };
 
-    me.reportErrors = function (errors) {
-        var errorsCount = errors.length;
-        var hasErrors = errorsCount > 0;
-
-        me.showHeader(errorsCount);
-        me.showErrors(errors);
-        me.showFooter(hasErrors);
+    me.reportErrors = function (report) {
+        me.showHeader(report.errorsCount);
+        me.showErrors(report.errors);
+        me.showFooter(report);
     };
 
     me.showHeader = function (errorsCount) {
@@ -154,13 +151,17 @@ function Report(container, browser) {
         listItem.appendChild(shortcut);
     };
 
-    me.showFooter = function (hasError) {
+    me.showFooter = function (report) {
         var footer = me.makeFooter();
 
-        me.addSwitchButton(footer);
-
-        if (hasError) {
+        if (report.hasError) {
             me.addRemoveErrorsButton(footer);
+        }
+
+        if (report.indicatorEnabled) {
+            me.addSwitchOffButton(footer);
+        } else {
+            me.addSwitchOnButton(footer);
         }
 
         me.container.appendChild(footer);
@@ -173,11 +174,30 @@ function Report(container, browser) {
         return footer;
     };
 
-    me.addSwitchButton = function (footer) {
+    me.addSwitchOffButton = function (footer) {
+        var switchButton = me.makeSwitchButton()
+        switchButton.innerText = me.browser.i18n.getMessage('switchOffButton');
+        switchButton.onclick = me.switchOff;
+        footer.appendChild(switchButton);
+    };
+
+    me.makeSwitchButton = function () {
         var switchButton = document.createElement('DIV');
         switchButton.classList.add('panel-section-footer-button');
         switchButton.classList.add('switch-button');
-        switchButton.innerText = me.browser.i18n.getMessage('switchOffButton');
+        return switchButton;
+    };
+
+    me.switchOff = function () {
+        var action = { name: 'switchOff' };
+        var sending = browser.runtime.sendMessage(action);
+        sending.then(me.refresh)
+    };
+
+    me.addSwitchOnButton = function (footer) {
+        var switchButton = me.makeSwitchButton();
+        switchButton.innerText = me.browser.i18n.getMessage('switchOnButton');
+        switchButton.onclick = me.switchOn;
         footer.appendChild(switchButton);
     };
 
