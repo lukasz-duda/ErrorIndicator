@@ -43,8 +43,9 @@ function ErrorIndicator(browser, dateProvider) {
     };
 
     me.hideErrors = function () {
-        me.browser.browserAction.setIcon({ path: 'icons/ok.svg' });
         me.browser.browserAction.setBadgeText({ text: '' });
+        var iconPath = (me.enabled) ? 'icons/ok.svg' : 'icons/disabled-ok.svg';
+        me.browser.browserAction.setIcon({ path: iconPath });
     };
 
     me.getReport = function () {
@@ -63,12 +64,14 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.switchOff = function () {
         me.enabled = false;
+        me.removeErrors();
     };
 
     me.enabled = true;
 
     me.switchOn = function () {
         me.enabled = true;
+        me.refresh();
     };
 
     me.browser.runtime.onMessage.addListener(me.handleMessage);
