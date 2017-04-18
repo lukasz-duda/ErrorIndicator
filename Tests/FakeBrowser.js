@@ -62,7 +62,7 @@ function FakeBrowser() {
 
     me.storage = {
         local: {
-            items: null,
+            items: {},
 
             get: function () {
                 return new FakeSynchronousPromise(function (resolve, reject) {

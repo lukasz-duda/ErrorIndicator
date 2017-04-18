@@ -89,7 +89,7 @@ function ErrorIndicator(browser, dateProvider) {
     };
 
     me.settingsLoaded = function (settings) {
-        me.enabled = (settings != null) ? settings.enabled : me.enabled;
+        me.enabled = (settings.enabled != null) ? settings.enabled : me.enabled;
         me.refresh();
     }
 
