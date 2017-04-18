@@ -73,17 +73,29 @@ function ErrorIndicator(browser, dateProvider) {
     me.switchOff = function () {
         me.enabled = false;
         me.removeErrors();
+        me.saveSettings();
     };
+
+    me.saveSettings = function () {
+        me.browser.storage.local.set({ enabled: me.enabled });
+    }
 
     me.enabled = true;
 
     me.switchOn = function () {
         me.enabled = true;
         me.refresh();
+        me.saveSettings();
     };
+
+    me.settingsLoaded = function (settings) {
+        me.enabled = (settings != null) ? settings.enabled : me.enabled;
+        me.refresh();
+    }
 
     me.browser.runtime.onMessage.addListener(me.handleMessage);
     var title = browser.i18n.getMessage('errorIndicatorTitle');
     me.browser.browserAction.setTitle({ title: title });
-    me.refresh();
+    var loadingSettings = me.browser.storage.local.get();
+    loadingSettings.then(me.settingsLoaded);
 }

@@ -59,4 +59,23 @@ function FakeBrowser() {
             return messageName + substitutionText + "Translation";
         }
     };
+
+    me.storage = {
+        local: {
+            items: null,
+
+            get: function () {
+                return new FakeSynchronousPromise(function (resolve, reject) {
+                    resolve(me.storage.local.items);
+                });
+            },
+
+            set: function (items) {
+                return new FakeSynchronousPromise(function (resolve, reject) {
+                    me.storage.local.items = items;
+                    resolve();
+                });
+            }
+        }
+    };
 };

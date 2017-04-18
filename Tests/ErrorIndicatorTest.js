@@ -10,15 +10,19 @@ var report = null;
 
 QUnit.module('ErrorIndicator', {
     beforeEach: function () {
-        fakeWindow = new FakeWindow();
         fakeBrowser = new FakeBrowser();
-        errorObserver = new ErrorObserver(fakeWindow, fakeBrowser);
+        fakeWindow = new FakeWindow();
         dateProvider = new DateProviderStub();
-        errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
-        reportContainer = document.getElementById('qunit-fixture');
-        report = new Report(reportContainer, fakeBrowser);
+        setUpNewIndicator();
     }
 });
+
+setUpNewIndicator = function () {
+    errorObserver = new ErrorObserver(fakeWindow, fakeBrowser);
+    errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
+    reportContainer = document.getElementById('qunit-fixture');
+    report = new Report(reportContainer, fakeBrowser);
+}
 
 QUnit.test('adds error to report', function (assert) {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
@@ -210,9 +214,13 @@ QUnit.test('after switching off shows switch on button', function (assert) {
 
     report.switchOff();
 
+    assertSwitchOnButton(assert);
+});
+
+function assertSwitchOnButton(assert) {
     var switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOnButtonTranslation')
-});
+}
 
 QUnit.test('after switching off and switching on shows switch off button', function (assert) {
     report.show();
@@ -253,4 +261,14 @@ QUnit.test('after switching off new errors are ignored', function (assert) {
     simulateError();
 
     assert.ok(!errorIndicator.hasErrors());
+});
+
+QUnit.test('switch state is remembered and shared between instances', function (assert) {
+    report.show();
+    report.switchOff();
+    setUpNewIndicator();
+
+    report.refresh();
+
+    assertSwitchOnButton(assert);
 });
