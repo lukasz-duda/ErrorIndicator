@@ -9,7 +9,7 @@
   "permissions": [ "storage" ],
 
   "icons": {
-    "48": "icons/error.svg"
+    "32": "icons/error.svg"
   },
 
   "browser_action": {
