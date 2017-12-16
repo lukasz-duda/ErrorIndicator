@@ -18,6 +18,11 @@ function FakeBrowser() {
         me.tabs.onUpdatedListener(tabId, changeInfo);
     };
 
+    me.updateTab = function (tabId) {
+        var changeInfo = { status: 'complete' };
+        me.tabs.onUpdatedListener(tabId, changeInfo);
+    };
+
     me.tabs = {
         onActivatedListener: null,
 

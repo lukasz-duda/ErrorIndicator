@@ -53,3 +53,10 @@ QUnit.test('tab refresh doesn\'t remove different tab\'s errros', function (asse
 
     assert.ok(errorIndicator.hasErrors());
 });
+
+QUnit.test('tab update doesn\'t remove it\'s errors', function (assert) {
+    simulateTabError(1);
+    fakeBrowser.updateTab(1);
+
+    assert.ok(errorIndicator.hasTabErrors());
+});

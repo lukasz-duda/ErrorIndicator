@@ -16,8 +16,10 @@ function ErrorIndicator(browser, dateProvider) {
     me.browser.tabs.onActivated.addListener(me.tabActivated);
 
     me.handleUpdated = function (tabId, changeInfo, tabInfo) {
-        me.removeTabErrors(tabId);
-        me.refresh();
+        if (changeInfo.status == 'loading') {
+            me.removeTabErrors(tabId);
+            me.refresh();
+        }
     };
 
     me.removeTabErrors = function (tabId) {
