@@ -6,7 +6,7 @@
   "version": "1.6",
   "default_locale": "en",
 
-  "permissions": [ "storage", "tabs" ],
+  "permissions": [ "storage" ],
 
   "icons": {
     "32": "icons/error.svg"
