@@ -6,22 +6,35 @@ function FakeBrowser() {
 
     me.senderTab = function (tabId) {
         me.senderTabId = tabId;
-    }
+    };
 
     me.activateTab = function (tabId) {
         var activeInfo = { tabId: tabId };
         me.tabs.onActivatedListener(activeInfo);
-    }
+    };
+
+    me.reloadTab = function (tabId) {
+        var changeInfo = { status: 'loading' };
+        me.tabs.onUpdatedListener(tabId, changeInfo);
+    };
 
     me.tabs = {
         onActivatedListener: null,
+
+        onUpdatedListener: null,
 
         onActivated: {
             addListener: function (listener) {
                 me.tabs.onActivatedListener = listener;
             }
+        },
+
+        onUpdated: {
+            addListener: function (listener) {
+                me.tabs.onUpdatedListener = listener;
+            }
         }
-    }
+    };
 
     me.runtime = {
         messageListener: null,

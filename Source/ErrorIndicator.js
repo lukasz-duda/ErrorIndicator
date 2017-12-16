@@ -15,6 +15,12 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.browser.tabs.onActivated.addListener(me.tabActivated);
 
+    me.handleUpdated = function (tabId, changeInfo, tabInfo) {
+        me.errors = [];
+    }
+
+    me.browser.tabs.onUpdated.addListener(me.handleUpdated);
+
     me.handleMessage = function (action, sender, respond) {
         var response = me[action.name](action.args, sender);
         respond(response);
