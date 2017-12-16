@@ -10,6 +10,7 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.tabActivated = function (activeInfo) {
         me.tabId = activeInfo.tabId;
+        me.refresh();
     }
 
     me.browser.tabs.onActivated.addListener(me.tabActivated);
