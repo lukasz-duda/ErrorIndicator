@@ -17,6 +17,7 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.handleUpdated = function (tabId, changeInfo, tabInfo) {
         me.errors = [];
+        me.refresh();
     }
 
     me.browser.tabs.onUpdated.addListener(me.handleUpdated);
@@ -49,11 +50,15 @@ function ErrorIndicator(browser, dateProvider) {
     }
 
     me.refresh = function () {
-        if (me.hasErrors()) {
+        if (me.hasTabErrors()) {
             me.indicateErrors();
         } else {
             me.hideErrors();
         }
+    };
+
+    me.hasTabErrors = function () {
+        return me.tabErrorsCount() > 0;
     };
 
     me.hasErrors = function () {

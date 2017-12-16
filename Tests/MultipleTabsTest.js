@@ -18,7 +18,7 @@ QUnit.test('no errors in new tab', function (assert) {
     simulateTabError(1);
     activateTab(2);
 
-    assertBadgeText(assert, '0');
+    assertBadgeText(assert, '');
 });
 
 QUnit.test('no errors reported in new tab', function (assert) {
@@ -38,6 +38,7 @@ QUnit.test('tab refresh removes tab errors', function (assert) {
     reloadTab(2);
 
     assert.equal(errorIndicator.tabErrorsCount(), 0);
+    assertBadgeText(assert, '');
 });
 
 function reloadTab(tabId) {
