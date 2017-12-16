@@ -20,3 +20,13 @@ QUnit.test('no errors in new tab', function (assert) {
 
     assertBadgeText(assert, '0');
 });
+
+QUnit.test('no errors reported in new tab', function (assert) {
+    simulateTabError(1);
+    activateTab(2);
+
+    var report = errorIndicator.getReport();
+    assert.notOk(report.hasError);
+    assert.equal(report.errorsCount, 0)
+    assert.equal(report.errors.length, 0);
+});

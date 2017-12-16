@@ -84,9 +84,9 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.getReport = function () {
         return {
-            hasError: me.errors.length > 0,
-            errorsCount: me.errors.length,
-            errors: me.errors,
+            hasError: me.tabErrorsCount() > 0,
+            errorsCount: me.tabErrorsCount(),
+            errors: me.tabErrors(),
             indicatorEnabled: me.enabled
         };
     };
