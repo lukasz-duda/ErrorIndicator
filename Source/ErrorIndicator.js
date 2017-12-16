@@ -4,20 +4,28 @@ function ErrorIndicator(browser, dateProvider) {
     var me = this;
     me.browser = browser;
     me.dateProvider = dateProvider;
+    me.tabId = null;
 
     me.errors = [];
 
+    me.tabActivated = function (activeInfo) {
+        me.tabId = activeInfo.tabId;
+    }
+
+    me.browser.tabs.onActivated.addListener(me.tabActivated);
+
     me.handleMessage = function (action, sender, respond) {
-        var response = me[action.name](action.args);
+        var response = me[action.name](action.args, sender);
         respond(response);
     };
 
-    me.addError = function (errorDetails) {
+    me.addError = function (errorDetails, sender) {
         if (me.disabled()) {
             return;
         }
 
         var error = {
+            tabId: sender.tab.id,
             message: errorDetails.message,
             messageType: errorDetails.messageType,
             timeStamp: me.dateProvider.now(),
@@ -47,7 +55,24 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.indicateErrors = function () {
         me.browser.browserAction.setIcon({ path: 'icons/error.svg' });
-        me.browser.browserAction.setBadgeText({ text: (me.errors.length).toString() });
+        me.browser.browserAction.setBadgeText({ text: me.tabErrorsCount().toString() });
+    };
+
+    me.tabErrorsCount = function () {
+        return me.tabErrors().length;
+    };
+
+    me.tabErrors = function () {
+        var tabErrors = [];
+
+        for (var i = 0; i < me.errors.length; i++) {
+            var error = me.errors[i];
+            if (error.tabId == me.tabId) {
+                tabErrors.push(error);
+            }
+        }
+
+        return tabErrors;
     };
 
     me.hideErrors = function () {

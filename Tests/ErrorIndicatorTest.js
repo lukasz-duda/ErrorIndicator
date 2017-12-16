@@ -14,6 +14,7 @@ QUnit.module('ErrorIndicator', {
         fakeWindow = new FakeWindow();
         dateProvider = new DateProviderStub();
         setUpNewIndicator();
+        activateTab(1);
     }
 });
 
@@ -22,6 +23,10 @@ setUpNewIndicator = function () {
     errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);
+}
+
+function activateTab(tabId) {
+    fakeBrowser.activateTab(tabId);
 }
 
 QUnit.test('adds error to report', function (assert) {
