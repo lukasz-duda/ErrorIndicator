@@ -218,7 +218,7 @@ function Report(container, browser) {
     };
 
     me.removeErrors = function () {
-        var action = { name: 'removeErrors' };
+        var action = { name: 'removeTabErrors' };
         var sending = browser.runtime.sendMessage(action);
         sending.then(me.refresh)
     };

@@ -17,12 +17,12 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.handleUpdated = function (tabId, changeInfo, tabInfo) {
         if (changeInfo.status == 'loading') {
-            me.removeTabErrors(tabId);
-            me.refresh();
+            me.tabId = tabId;
+            me.removeTabErrors();
         }
     };
 
-    me.removeTabErrors = function (tabId) {
+    me.removeTabErrors = function () {
         var remainingErrors = [];
 
         for (var i = 0; i < me.errors.length; i++) {
@@ -33,6 +33,7 @@ function ErrorIndicator(browser, dateProvider) {
         }
 
         me.errors = remainingErrors;
+        me.refresh();
     };
 
     me.browser.tabs.onUpdated.addListener(me.handleUpdated);

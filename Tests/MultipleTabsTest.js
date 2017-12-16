@@ -56,7 +56,24 @@ QUnit.test('tab refresh doesn\'t remove different tab\'s errros', function (asse
 
 QUnit.test('tab update doesn\'t remove it\'s errors', function (assert) {
     simulateTabError(1);
-    fakeBrowser.updateTab(1);
+    updateTab(1);
 
     assert.ok(errorIndicator.hasTabErrors());
+});
+
+function updateTab(tabId) {
+    fakeBrowser.updateTab(tabId);
+}
+
+QUnit.test('remove errors button removes tab errors only', function (assert) {
+    simulateTabError(1);
+    activateTab(2);
+    simulateTabError(2);
+    report.show();
+    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
+
+    removeErrorsButton.click();
+
+    assert.notOk(errorIndicator.hasTabErrors());
+    assert.ok(errorIndicator.hasErrors());
 });
