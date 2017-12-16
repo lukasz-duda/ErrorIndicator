@@ -44,3 +44,12 @@ QUnit.test('tab refresh removes tab errors', function (assert) {
 function reloadTab(tabId) {
     fakeBrowser.reloadTab(tabId);
 }
+
+QUnit.test('tab refresh doesn\'t remove different tab\'s errros', function (assert) {
+    simulateTabError(1);
+    activateTab(2);
+    simulateTabError(2);
+    reloadTab(2);
+
+    assert.ok(errorIndicator.hasErrors());
+});

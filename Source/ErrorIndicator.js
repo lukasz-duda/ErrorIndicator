@@ -11,14 +11,27 @@ function ErrorIndicator(browser, dateProvider) {
     me.tabActivated = function (activeInfo) {
         me.tabId = activeInfo.tabId;
         me.refresh();
-    }
+    };
 
     me.browser.tabs.onActivated.addListener(me.tabActivated);
 
     me.handleUpdated = function (tabId, changeInfo, tabInfo) {
-        me.errors = [];
+        me.removeTabErrors(tabId);
         me.refresh();
-    }
+    };
+
+    me.removeTabErrors = function (tabId) {
+        var remainingErrors = [];
+
+        for (var i = 0; i < me.errors.length; i++) {
+            var error = me.errors[i];
+            if (error.tabId != me.tabId) {
+                remainingErrors.push(error);
+            }
+        }
+
+        me.errors = remainingErrors;
+    };
 
     me.browser.tabs.onUpdated.addListener(me.handleUpdated);
 
@@ -47,7 +60,7 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.disabled = function () {
         return !me.enabled;
-    }
+    };
 
     me.refresh = function () {
         if (me.hasTabErrors()) {
@@ -115,7 +128,7 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.saveSettings = function () {
         me.browser.storage.local.set({ enabled: me.enabled });
-    }
+    };
 
     me.enabled = true;
 
@@ -128,7 +141,7 @@ function ErrorIndicator(browser, dateProvider) {
     me.settingsLoaded = function (settings) {
         me.enabled = (settings.enabled != null) ? settings.enabled : me.enabled;
         me.refresh();
-    }
+    };
 
     me.browser.runtime.onMessage.addListener(me.handleMessage);
     var title = browser.i18n.getMessage('errorIndicatorTitle');
