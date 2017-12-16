@@ -76,4 +76,5 @@ QUnit.test('remove errors button removes tab errors only', function (assert) {
 
     assert.notOk(errorIndicator.hasTabErrors());
     assert.ok(errorIndicator.hasErrors());
+    assertNoRemoveErrorsButton(assert);
 });
