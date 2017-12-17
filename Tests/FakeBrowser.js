@@ -23,10 +23,16 @@ function FakeBrowser() {
         me.tabs.onUpdatedListener(tabId, changeInfo);
     };
 
+    me.removeTab = function (tabId) {
+        me.tabs.onRemovedListener(tabId);
+    };
+
     me.tabs = {
         onActivatedListener: null,
 
         onUpdatedListener: null,
+
+        onRemovedListener: null,
 
         onActivated: {
             addListener: function (listener) {
@@ -37,6 +43,12 @@ function FakeBrowser() {
         onUpdated: {
             addListener: function (listener) {
                 me.tabs.onUpdatedListener = listener;
+            }
+        },
+
+        onRemoved: {
+            addListener: function (listener) {
+                me.tabs.onRemovedListener = listener;
             }
         }
     };

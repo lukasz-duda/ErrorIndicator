@@ -17,17 +17,17 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.handleUpdated = function (tabId, changeInfo, tabInfo) {
         if (changeInfo.status == 'loading') {
-            me.tabId = tabId;
-            me.removeTabErrors();
+            me.removeTabErrors(tabId);
         }
     };
 
-    me.removeTabErrors = function () {
+    me.removeTabErrors = function (tabId) {
+        var removeFromTabId = tabId || me.tabId;
         var remainingErrors = [];
 
         for (var i = 0; i < me.errors.length; i++) {
             var error = me.errors[i];
-            if (error.tabId != me.tabId) {
+            if (error.tabId != removeFromTabId) {
                 remainingErrors.push(error);
             }
         }
@@ -37,6 +37,12 @@ function ErrorIndicator(browser, dateProvider) {
     };
 
     me.browser.tabs.onUpdated.addListener(me.handleUpdated);
+
+    me.tabRemoved = function (tabId, changeInfo, tabInfo) {
+        me.removeTabErrors(tabId);
+    };
+
+    me.browser.tabs.onRemoved.addListener(me.tabRemoved);
 
     me.handleMessage = function (action, sender, respond) {
         var response = me[action.name](action.args, sender);
@@ -78,7 +84,11 @@ function ErrorIndicator(browser, dateProvider) {
     };
 
     me.hasErrors = function () {
-        return me.errors.length > 0;
+        return me.errorsCount() > 0;
+    };
+
+    me.errorsCount = function () {
+        return me.errors.length;
     };
 
     me.indicateErrors = function () {
@@ -111,7 +121,7 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.getReport = function () {
         return {
-            hasError: me.tabErrorsCount() > 0,
+            hasError: me.hasTabErrors(),
             errorsCount: me.tabErrorsCount(),
             errors: me.tabErrors(),
             indicatorEnabled: me.enabled

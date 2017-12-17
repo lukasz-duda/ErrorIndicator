@@ -78,3 +78,18 @@ QUnit.test('remove errors button removes tab errors only', function (assert) {
     assert.ok(errorIndicator.hasErrors());
     assertNoRemoveErrorsButton(assert);
 });
+
+QUnit.test('tab removal removes it\'s errors', function (assert) {
+    simulateTabError(1);
+    activateTab(2);
+    simulateTabError(2);
+
+    removeTab(1);
+
+    assert.equal(errorIndicator.tabErrorsCount(), 1);
+    assert.equal(errorIndicator.errorsCount(), 1);
+});
+
+function removeTab(tabId) {
+    fakeBrowser.removeTab(tabId);
+}
