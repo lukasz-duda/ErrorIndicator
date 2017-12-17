@@ -4,50 +4,10 @@ function ErrorIndicator(browser, dateProvider) {
     var me = this;
     me.browser = browser;
     me.dateProvider = dateProvider;
+
+    me.enabled = true;
     me.tabId = null;
-
-    me.errors = [];
-
-    me.tabActivated = function (activeInfo) {
-        me.tabId = activeInfo.tabId;
-        me.refresh();
-    };
-
-    me.browser.tabs.onActivated.addListener(me.tabActivated);
-
-    me.handleUpdated = function (tabId, changeInfo, tabInfo) {
-        if (changeInfo.status == 'loading') {
-            me.removeTabErrors(tabId);
-        }
-    };
-
-    me.removeTabErrors = function (tabId) {
-        var removeFromTabId = tabId || me.tabId;
-        var remainingErrors = [];
-
-        for (var i = 0; i < me.errors.length; i++) {
-            var error = me.errors[i];
-            if (error.tabId != removeFromTabId) {
-                remainingErrors.push(error);
-            }
-        }
-
-        me.errors = remainingErrors;
-        me.refresh();
-    };
-
-    me.browser.tabs.onUpdated.addListener(me.handleUpdated);
-
-    me.tabRemoved = function (tabId, changeInfo, tabInfo) {
-        me.removeTabErrors(tabId);
-    };
-
-    me.browser.tabs.onRemoved.addListener(me.tabRemoved);
-
-    me.handleMessage = function (action, sender, respond) {
-        var response = me[action.name](action.args, sender);
-        respond(response);
-    };
+    me.allErrors = [];
 
     me.addError = function (errorDetails, sender) {
         if (me.disabled()) {
@@ -63,7 +23,7 @@ function ErrorIndicator(browser, dateProvider) {
             lineNumber: errorDetails.lineNumber,
             columnNumber: errorDetails.columnNumber
         };
-        me.errors.push(error);
+        me.allErrors.push(error);
         me.refresh();
     };
 
@@ -83,19 +43,6 @@ function ErrorIndicator(browser, dateProvider) {
         return me.tabErrorsCount() > 0;
     };
 
-    me.hasErrors = function () {
-        return me.errorsCount() > 0;
-    };
-
-    me.errorsCount = function () {
-        return me.errors.length;
-    };
-
-    me.indicateErrors = function () {
-        me.browser.browserAction.setIcon({ path: 'icons/error.svg' });
-        me.browser.browserAction.setBadgeText({ text: me.tabErrorsCount().toString() });
-    };
-
     me.tabErrorsCount = function () {
         return me.tabErrors().length;
     };
@@ -103,14 +50,67 @@ function ErrorIndicator(browser, dateProvider) {
     me.tabErrors = function () {
         var tabErrors = [];
 
-        for (var i = 0; i < me.errors.length; i++) {
-            var error = me.errors[i];
+        for (var i = 0; i < me.allErrors.length; i++) {
+            var error = me.allErrors[i];
             if (error.tabId == me.tabId) {
                 tabErrors.push(error);
             }
         }
 
         return tabErrors;
+    };
+
+    me.hasErrors = function () {
+        return me.errorsCount() > 0;
+    };
+
+    me.errorsCount = function () {
+        return me.errors().length;
+    };
+
+    me.errors = function () {
+        return me.allErrors;
+    }
+
+    me.onTabActivated = function (activeInfo) {
+        me.tabId = activeInfo.tabId;
+        me.refresh();
+    };
+
+    me.onTabRemoved = function (tabId, changeInfo, tabInfo) {
+        me.removeTabErrors(tabId);
+    };
+
+    me.removeTabErrors = function (tabId) {
+        var removeFromTabId = tabId || me.tabId;
+        var remainingErrors = [];
+
+        for (var i = 0; i < me.allErrors.length; i++) {
+            var error = me.allErrors[i];
+            if (error.tabId != removeFromTabId) {
+                remainingErrors.push(error);
+            }
+        }
+
+        me.allErrors = remainingErrors;
+        me.refresh();
+    };
+
+    me.onTabUpdated = function (tabId, changeInfo, tabInfo) {
+        var tabReloaded = changeInfo.status == 'loading';
+        if (tabReloaded) {
+            me.removeTabErrors(tabId);
+        }
+    };
+
+    me.onMessage = function (action, sender, respond) {
+        var response = me[action.name](action.args, sender);
+        respond(response);
+    };
+
+    me.indicateErrors = function () {
+        me.browser.browserAction.setIcon({ path: 'icons/error.svg' });
+        me.browser.browserAction.setBadgeText({ text: me.tabErrorsCount().toString() });
     };
 
     me.hideErrors = function () {
@@ -128,22 +128,20 @@ function ErrorIndicator(browser, dateProvider) {
         };
     };
 
-    me.removeErrors = function () {
-        me.errors = [];
-        me.refresh();
-    };
-
     me.switchOff = function () {
         me.enabled = false;
         me.removeErrors();
         me.saveSettings();
     };
 
+    me.removeErrors = function () {
+        me.allErrors = [];
+        me.refresh();
+    };
+
     me.saveSettings = function () {
         me.browser.storage.local.set({ enabled: me.enabled });
     };
-
-    me.enabled = true;
 
     me.switchOn = function () {
         me.enabled = true;
@@ -156,7 +154,10 @@ function ErrorIndicator(browser, dateProvider) {
         me.refresh();
     };
 
-    me.browser.runtime.onMessage.addListener(me.handleMessage);
+    me.browser.runtime.onMessage.addListener(me.onMessage);
+    me.browser.tabs.onActivated.addListener(me.onTabActivated);
+    me.browser.tabs.onRemoved.addListener(me.onTabRemoved);
+    me.browser.tabs.onUpdated.addListener(me.onTabUpdated);
     var title = browser.i18n.getMessage('errorIndicatorTitle');
     me.browser.browserAction.setTitle({ title: title });
     var loadingSettings = me.browser.storage.local.get();

@@ -2,10 +2,9 @@
 
 function FakeBrowser() {
     var me = this;
-    me.senderTabId = 1;
 
     me.senderTab = function (tabId) {
-        me.senderTabId = tabId;
+        me.runtime.senderTabId = tabId;
     };
 
     me.activateTab = function (tabId) {
@@ -56,6 +55,8 @@ function FakeBrowser() {
     me.runtime = {
         messageListener: null,
 
+        senderTabId: 1,
+
         onMessage: {
             addListener: function (listener) {
                 me.runtime.messageListener = listener;
@@ -64,7 +65,7 @@ function FakeBrowser() {
 
         sendMessage: function (message) {
             var sender = {
-                tab: { id: me.senderTabId }
+                tab: { id: me.runtime.senderTabId }
             };
 
             return new FakeSynchronousPromise(function (resolve, reject) {

@@ -31,13 +31,13 @@ function Report(container, browser) {
         headerSection.classList.add('panel-section');
         headerSection.classList.add('panel-section-header');
         return headerSection;
-    }
+    };
 
     me.addHeaderIcon = function (headerSection) {
         var headerIcon = document.createElement('DIV');
         headerIcon.classList.add('icon-section-header');
         headerSection.appendChild(headerIcon);
-    }
+    };
 
     me.addHeaderText = function (headerSection, errorsCount) {
         var headerText = document.createElement('DIV');
@@ -45,7 +45,7 @@ function Report(container, browser) {
         headerText.classList.add('text-section-header');
         headerText.textContent = me.browser.i18n.getMessage('detectedErrorsCount', errorsCount);
         headerSection.appendChild(headerText);
-    }
+    };
 
     me.showErrors = function (errors) {
         var errorList = document.createElement('DIV');
@@ -125,7 +125,7 @@ function Report(container, browser) {
 
         return year + '-' + month + '-' + day
             + ' ' + hour + ':' + minute + ':' + second;
-    }
+    };
 
     me.zeroPadded = function (value) {
         return (value < 10) ? '0' + value : value.toString();
@@ -205,7 +205,7 @@ function Report(container, browser) {
         var action = { name: 'switchOn' };
         var sending = browser.runtime.sendMessage(action);
         sending.then(me.refresh)
-    }
+    };
 
     me.addRemoveErrorsButton = function (footer) {
         var removeErrorsButton = document.createElement('DIV');
