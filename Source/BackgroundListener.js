@@ -57,6 +57,10 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
     };
 
     me.webRequestCompleted = function (details) {
+        if (details.tabId == -1 || details.statusCode < 400) {
+            return;
+        }
+
         var tabError = new TabError({
             tabId: details.tabId
         });
