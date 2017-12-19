@@ -10,4 +10,5 @@
 /// <reference path="Source/PageObserver.js" />
 /// <reference path="Source/DateProvider.js" />
 /// <reference path="Source/ErrorIndicator.js" />
+/// <reference path="Source/BackgroundListener.js />
 /// <reference path="Source/Report.js" />

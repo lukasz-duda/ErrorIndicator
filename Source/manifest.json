@@ -29,7 +29,7 @@
   ],
 
   "background": {
-    "scripts": [ "DateProvider.js", "ErrorIndicator.js", "background.js" ]
+    "scripts": [ "DateProvider.js", "ErrorIndicator.js", "BackgroundListener.js", "background.js" ]
   }
 
 }

@@ -9,13 +9,13 @@ function ErrorIndicator(browser, dateProvider) {
     me.tabId = null;
     me.allErrors = [];
 
-    me.addError = function (errorDetails, sender) {
+    me.addError = function (errorDetails, tabId) {
         if (me.disabled()) {
             return;
         }
 
         var error = {
-            tabId: sender.tab.id,
+            tabId: tabId,
             message: errorDetails.message,
             messageType: errorDetails.messageType,
             timeStamp: me.dateProvider.now(),
@@ -70,15 +70,11 @@ function ErrorIndicator(browser, dateProvider) {
 
     me.errors = function () {
         return me.allErrors;
-    }
-
-    me.onTabActivated = function (activeInfo) {
-        me.tabId = activeInfo.tabId;
-        me.refresh();
     };
 
-    me.onTabRemoved = function (tabId, changeInfo, tabInfo) {
-        me.removeTabErrors(tabId);
+    me.selectTab = function (tabId) {
+        me.tabId = tabId;
+        me.refresh();
     };
 
     me.removeTabErrors = function (tabId) {
@@ -94,18 +90,6 @@ function ErrorIndicator(browser, dateProvider) {
 
         me.allErrors = remainingErrors;
         me.refresh();
-    };
-
-    me.onTabUpdated = function (tabId, changeInfo, tabInfo) {
-        var tabReloaded = changeInfo.status == 'loading';
-        if (tabReloaded) {
-            me.removeTabErrors(tabId);
-        }
-    };
-
-    me.onMessage = function (action, sender, respond) {
-        var response = me[action.name](action.args, sender);
-        respond(response);
     };
 
     me.indicateErrors = function () {
@@ -154,10 +138,6 @@ function ErrorIndicator(browser, dateProvider) {
         me.refresh();
     };
 
-    me.browser.runtime.onMessage.addListener(me.onMessage);
-    me.browser.tabs.onActivated.addListener(me.onTabActivated);
-    me.browser.tabs.onRemoved.addListener(me.onTabRemoved);
-    me.browser.tabs.onUpdated.addListener(me.onTabUpdated);
     var title = browser.i18n.getMessage('errorIndicatorTitle');
     me.browser.browserAction.setTitle({ title: title });
     var loadingSettings = me.browser.storage.local.get();
