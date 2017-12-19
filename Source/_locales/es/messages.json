@@ -16,12 +16,12 @@
   },
 
   "switchOffButton": {
-    "message": "Desactivado",
+    "message": "Desactivar",
     "description": "Etiqueta del botón para desactivar."
   },
 
   "switchOnButton": {
-    "message": "Activado",
+    "message": "Activar",
     "description": "Etiqueta del botón para activar."
   },
 
