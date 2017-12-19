@@ -68,5 +68,5 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
     me.browser.tabs.onActivated.addListener(me.onTabActivated);
     me.browser.tabs.onRemoved.addListener(me.onTabRemoved);
     me.browser.tabs.onUpdated.addListener(me.onTabUpdated);
-    me.browser.webRequest.onCompleted.addListener(me.webRequestCompleted);
+    me.browser.webRequest.onCompleted.addListener(me.webRequestCompleted, { urls: ['<all_urls>'] });
 }

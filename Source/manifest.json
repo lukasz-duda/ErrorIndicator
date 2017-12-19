@@ -6,7 +6,7 @@
   "version": "1.7",
   "default_locale": "en",
 
-  "permissions": [ "storage" ],
+  "permissions": [ "storage", "webRequest", "<all_urls>" ],
 
   "icons": {
     "32": "icons/error.svg"
