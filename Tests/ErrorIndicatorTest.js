@@ -2,7 +2,7 @@
 
 var fakeWindow = null;
 var fakeBrowser = null;
-var errorObserver = null;
+var pageObserver = null;
 var dateProvider = null;
 var errorIndicator = null
 var reportContainer = null;
@@ -19,7 +19,7 @@ QUnit.module('ErrorIndicator', {
 });
 
 setUpNewIndicator = function () {
-    errorObserver = new ErrorObserver(fakeWindow, fakeBrowser);
+    pageObserver = new PageObserver(fakeWindow, fakeBrowser);
     errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);

@@ -1,6 +1,6 @@
 ﻿/// <reference path="../References.js" />
 
-function ErrorObserver(window, browser) {
+function PageObserver(window, browser) {
     var me = this;
     me.window = window;
     me.browser = browser;
