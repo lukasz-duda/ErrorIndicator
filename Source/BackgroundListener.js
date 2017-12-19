@@ -62,7 +62,11 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         }
 
         var tabError = new TabError({
-            tabId: details.tabId
+            tabId: details.tabId,
+            message: details.statusLine,
+            messageType: 'error',
+            source: details.url,
+            timeStamp: me.dateProvider.now()
         });
 
         me.errorIndicator.addError(tabError);
