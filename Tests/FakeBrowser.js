@@ -3,8 +3,59 @@
 function FakeBrowser() {
     var me = this;
 
+    me.senderTab = function (tabId) {
+        me.runtime.senderTabId = tabId;
+    };
+
+    me.activateTab = function (tabId) {
+        var activeInfo = { tabId: tabId };
+        me.tabs.onActivatedListener(activeInfo);
+    };
+
+    me.reloadTab = function (tabId) {
+        var changeInfo = { status: 'loading' };
+        me.tabs.onUpdatedListener(tabId, changeInfo);
+    };
+
+    me.updateTab = function (tabId) {
+        var changeInfo = { status: 'complete' };
+        me.tabs.onUpdatedListener(tabId, changeInfo);
+    };
+
+    me.removeTab = function (tabId) {
+        me.tabs.onRemovedListener(tabId);
+    };
+
+    me.tabs = {
+        onActivatedListener: null,
+
+        onUpdatedListener: null,
+
+        onRemovedListener: null,
+
+        onActivated: {
+            addListener: function (listener) {
+                me.tabs.onActivatedListener = listener;
+            }
+        },
+
+        onUpdated: {
+            addListener: function (listener) {
+                me.tabs.onUpdatedListener = listener;
+            }
+        },
+
+        onRemoved: {
+            addListener: function (listener) {
+                me.tabs.onRemovedListener = listener;
+            }
+        }
+    };
+
     me.runtime = {
         messageListener: null,
+
+        senderTabId: 1,
 
         onMessage: {
             addListener: function (listener) {
@@ -13,7 +64,9 @@ function FakeBrowser() {
         },
 
         sendMessage: function (message) {
-            var sender = null;
+            var sender = {
+                tab: { id: me.runtime.senderTabId }
+            };
 
             return new FakeSynchronousPromise(function (resolve, reject) {
                 me.runtime.messageListener(message, sender, resolve);

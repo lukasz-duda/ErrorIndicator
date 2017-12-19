@@ -14,6 +14,7 @@ QUnit.module('ErrorIndicator', {
         fakeWindow = new FakeWindow();
         dateProvider = new DateProviderStub();
         setUpNewIndicator();
+        activateTab(1);
     }
 });
 
@@ -22,6 +23,10 @@ setUpNewIndicator = function () {
     errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);
+}
+
+function activateTab(tabId) {
+    fakeBrowser.activateTab(tabId);
 }
 
 QUnit.test('adds error to report', function (assert) {
@@ -81,9 +86,17 @@ QUnit.test('without error source defined shows empty source', function (assert) 
 QUnit.test('indicates error', function (assert) {
     simulateError();
 
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, 'icons/error.svg');
+    assertErrorIcon(assert);
 });
+
+function assertErrorIcon(assert) {
+    assertIcon(assert, 'icons/error.svg');
+}
+
+function assertIcon(assert, iconPath) {
+    var iconDetails = fakeBrowser.browserAction.getIcon();
+    assert.equal(iconDetails.path, iconPath);
+}
 
 function simulateError() {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
@@ -113,23 +126,25 @@ QUnit.test('shows remove errors button', function (assert) {
 QUnit.test('without errors doesn\'t show remove errors button', function (assert) {
     report.show();
 
+    assertNoRemoveErrorsButton(assert);
+});
+
+function assertNoRemoveErrorsButton(assert) {
     var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
     assert.equal(null, removeErrorsButton);
-});
+}
 
 QUnit.test('without any error doesn\'t indicate error', function (assert) {
     assertOkIcon(assert);
-    assertBadgeText(assert, '');
+    assertNoBadgeText(assert);
 });
 
 function assertOkIcon(assert) {
     assertIcon(assert, 'icons/ok.svg');
 }
 
-function assertIcon(assert, iconPath) {
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, iconPath);
-
+function assertNoBadgeText(assert) {
+    assertBadgeText(assert, '');
 }
 
 QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
@@ -140,7 +155,7 @@ QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
     report.removeErrors();
 
     assertOkIcon(assert);
-    assertBadgeText(assert, '');
+    assertNoBadgeText(assert);
 });
 
 QUnit.test('translates title', function (assert) {
@@ -238,14 +253,13 @@ QUnit.test('after switching off removes errors', function (assert) {
 
     var listItems = reportContainer.querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 0);
-    assertBadgeText(assert, '');
+    assertNoBadgeText(assert);
 });
 
 QUnit.test('after switching off changes icon to disabled', function (assert) {
     report.switchOff();
 
-    var iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, 'icons/disabled-ok.svg');
+    assertIcon(assert, 'icons/disabled-ok.svg');
 });
 
 QUnit.test('after switching off and on shows changes icon to enabled', function (assert) {
@@ -260,7 +274,7 @@ QUnit.test('after switching off new errors are ignored', function (assert) {
 
     simulateError();
 
-    assert.ok(!errorIndicator.hasErrors());
+    assert.notOk(errorIndicator.hasErrors());
 });
 
 QUnit.test('switch state is remembered and shared between instances', function (assert) {
