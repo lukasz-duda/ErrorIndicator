@@ -1,7 +1,8 @@
 ﻿/// <reference path="../References.js" />
 
-function BackgroundListener(browser, errorIndicator) {
+function BackgroundListener(dateProvider, browser, errorIndicator) {
     var me = this;
+    me.dateProvider = dateProvider;
     me.browser = browser;
     me.errorIndicator = errorIndicator;
 
@@ -11,7 +12,17 @@ function BackgroundListener(browser, errorIndicator) {
     };
 
     me.addError = function (errorDetails, sender) {
-        me.errorIndicator.addError(errorDetails, sender.tab.id);
+        var tabError = new TabError({
+            tabId: sender.tab.id,
+            message: errorDetails.message,
+            messageType: errorDetails.messageType,
+            timeStamp: me.dateProvider.now(),
+            source: errorDetails.source,
+            lineNumber: errorDetails.lineNumber,
+            columnNumber: errorDetails.columnNumber,
+        });
+
+        me.errorIndicator.addError(tabError);
     };
 
     me.getReport = function () {

@@ -20,8 +20,8 @@ QUnit.module('ErrorIndicator', {
 
 setUpNewIndicator = function () {
     pageObserver = new PageObserver(fakeWindow, fakeBrowser);
-    errorIndicator = new ErrorIndicator(fakeBrowser, dateProvider);
-    var backgroundListener = new BackgroundListener(fakeBrowser, errorIndicator);
+    errorIndicator = new ErrorIndicator(fakeBrowser);
+    var backgroundListener = new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);
 }

@@ -1,29 +1,19 @@
 ﻿/// <reference path="../References.js" />
 
-function ErrorIndicator(browser, dateProvider) {
+function ErrorIndicator(browser) {
     var me = this;
     me.browser = browser;
-    me.dateProvider = dateProvider;
 
     me.enabled = true;
     me.tabId = null;
     me.allErrors = [];
 
-    me.addError = function (errorDetails, tabId) {
+    me.addError = function (tabError) {
         if (me.disabled()) {
             return;
         }
 
-        var error = {
-            tabId: tabId,
-            message: errorDetails.message,
-            messageType: errorDetails.messageType,
-            timeStamp: me.dateProvider.now(),
-            source: errorDetails.source,
-            lineNumber: errorDetails.lineNumber,
-            columnNumber: errorDetails.columnNumber
-        };
-        me.allErrors.push(error);
+        me.allErrors.push(tabError);
         me.refresh();
     };
 
