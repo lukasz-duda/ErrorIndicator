@@ -139,10 +139,17 @@ function Report(container, browser) {
     };
 
     me.formatErrorSource = function (error) {
+        var hasNoErrorSource = (error.source == null);
+        if (hasNoErrorSource) {
+            return '';
+        }
+
         var delimiter = ':';
-        var hasErrorSource = (error.source != null);
-        var errorSourceDescription = error.source + delimiter + error.lineNumber + delimiter + error.columnNumber;
-        return (hasErrorSource) ? errorSourceDescription : '';
+        var hasLineNumber = (error.lineNumber != null);
+
+        return (hasLineNumber) ?
+            error.source + delimiter + error.lineNumber + delimiter + error.columnNumber :
+            error.source;
     };
 
     me.addErrorShortcut = function (listItem) {

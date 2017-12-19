@@ -59,3 +59,15 @@ QUnit.test('adds error details', function (assert) {
     assert.equal(tab5Error.message, 'HTTP/1.1 503');
     assert.equal(tab5Error.source, 'http://b');
 });
+
+QUnit.test('report doesn\'t include empty line number', function (assert) {
+    fakeWindow.onerror('message 1', 'source 1', null, null);
+
+    report.show();
+
+    var errorList = reportContainer.getElementsByClassName('error-list');
+    assert.equal(errorList.length, 1);
+    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    assert.equal(listItems.length, 1);
+    assertErrorListItem(assert, listItems[0], 'source 1', 'message 1');
+});
