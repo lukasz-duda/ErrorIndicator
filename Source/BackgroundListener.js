@@ -56,8 +56,17 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         }
     };
 
+    me.webRequestCompleted = function (details) {
+        var tabError = new TabError({
+            tabId: details.tabId
+        });
+
+        me.errorIndicator.addError(tabError);
+    };
+
     me.browser.runtime.onMessage.addListener(me.onMessage);
     me.browser.tabs.onActivated.addListener(me.onTabActivated);
     me.browser.tabs.onRemoved.addListener(me.onTabRemoved);
     me.browser.tabs.onUpdated.addListener(me.onTabUpdated);
+    me.browser.webRequest.onCompleted.addListener(me.webRequestCompleted);
 }

@@ -26,6 +26,10 @@ function FakeBrowser() {
         me.tabs.onRemovedListener(tabId);
     };
 
+    me.webRequestCompleted = function (details) {
+        me.webRequest.onCompletedListener(details);
+    };
+
     me.tabs = {
         onActivatedListener: null,
 
@@ -48,6 +52,16 @@ function FakeBrowser() {
         onRemoved: {
             addListener: function (listener) {
                 me.tabs.onRemovedListener = listener;
+            }
+        }
+    };
+
+    me.webRequest = {
+        onCompletedListener: null,
+
+        onCompleted: {
+            addListener: function (listener) {
+                me.webRequest.onCompletedListener = listener;
             }
         }
     };
