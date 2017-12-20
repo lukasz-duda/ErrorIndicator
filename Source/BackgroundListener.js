@@ -75,6 +75,17 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         me.errorIndicator.addError(tabError);
     };
 
+    me.initialize = function () {
+        var selectTab = function (tabs) {
+            var activeTab = tabs[0];
+            me.errorIndicator.selectTab(activeTab.id);
+        };
+
+        var gettingActiveTab = me.browser.tabs.query({ active: true, currentWindow: true });
+        gettingActiveTab.then(selectTab);
+    };
+
+    me.initialize();
     me.browser.runtime.onMessage.addListener(me.onMessage);
     me.browser.tabs.onActivated.addListener(me.onTabActivated);
     me.browser.tabs.onRemoved.addListener(me.onTabRemoved);

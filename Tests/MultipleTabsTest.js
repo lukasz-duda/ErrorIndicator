@@ -94,3 +94,10 @@ QUnit.test('tab removal removes it\'s errors', function (assert) {
 function removeTab(tabId) {
     fakeBrowser.removeTab(tabId);
 }
+
+QUnit.test('with indicator loaded after tab activated, shows tab error', function (assert) {
+    setUpNewIndicator();
+    simulateTabError(1);
+
+    assert.ok(errorIndicator.hasTabErrors());
+});

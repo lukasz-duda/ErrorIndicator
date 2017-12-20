@@ -8,6 +8,7 @@ function FakeBrowser() {
     };
 
     me.activateTab = function (tabId) {
+        me.tabs.activeTabId = tabId;
         var activeInfo = { tabId: tabId };
         me.tabs.onActivatedListener(activeInfo);
     };
@@ -31,6 +32,8 @@ function FakeBrowser() {
     };
 
     me.tabs = {
+        activeTabId: null,
+
         onActivatedListener: null,
 
         onUpdatedListener: null,
@@ -53,6 +56,17 @@ function FakeBrowser() {
             addListener: function (listener) {
                 me.tabs.onRemovedListener = listener;
             }
+        },
+
+        query: function (queryInfo) {
+            var tabs = [];
+            if (queryInfo.active && queryInfo.currentWindow) {
+                tabs.push({ id: me.tabs.activeTabId });
+            }
+
+            return new FakeSynchronousPromise(function (resolve, reject) {
+                resolve(tabs);
+            });
         }
     };
 
@@ -60,8 +74,11 @@ function FakeBrowser() {
         onCompletedListener: null,
 
         onCompleted: {
-            addListener: function (listener) {
-                me.webRequest.onCompletedListener = listener;
+            addListener: function (listener, filter) {
+                var servesAllUrls = (filter.urls[0] == '<all_urls>');
+                if (servesAllUrls) {
+                    me.webRequest.onCompletedListener = listener;
+                }
             }
         }
     };

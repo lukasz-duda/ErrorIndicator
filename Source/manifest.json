@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "Error indicator",
   "description": "Provides common place for reporting errors from all opened pages.",
-  "version": "1.8",
+  "version": "1.9",
   "default_locale": "en",
 
   "permissions": [ "storage", "webRequest", "<all_urls>" ],
