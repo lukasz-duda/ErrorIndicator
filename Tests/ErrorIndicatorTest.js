@@ -97,6 +97,7 @@ function assertErrorIcon(assert) {
 function assertIcon(assert, iconPath) {
     var iconDetails = fakeBrowser.browserAction.getIcon();
     assert.equal(iconDetails.path, iconPath);
+    assert.equal(iconDetails.tabId, fakeBrowser.tabs.activeTabId);
 }
 
 function simulateError() {
@@ -113,6 +114,7 @@ QUnit.test('shows error count', function (assert) {
 function assertBadgeText(assert, expectedText) {
     var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
     assert.equal(badgeTextDetails.text, expectedText);
+    assert.equal(badgeTextDetails.tabId, fakeBrowser.tabs.activeTabId);
 }
 
 QUnit.test('shows remove errors button', function (assert) {

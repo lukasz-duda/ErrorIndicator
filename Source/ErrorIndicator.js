@@ -83,14 +83,15 @@ function ErrorIndicator(browser) {
     };
 
     me.indicateErrors = function () {
-        me.browser.browserAction.setIcon({ path: 'icons/error.svg' });
-        me.browser.browserAction.setBadgeText({ text: me.tabErrorsCount().toString() });
+        me.browser.browserAction.setIcon({ path: 'icons/error.svg', tabId: me.tabId });
+        var badgeTextDetails = { text: me.tabErrorsCount().toString(), tabId: me.tabId };
+        me.browser.browserAction.setBadgeText(badgeTextDetails);
     };
 
     me.hideErrors = function () {
-        me.browser.browserAction.setBadgeText({ text: '' });
+        me.browser.browserAction.setBadgeText({ text: '', tabId: me.tabId });
         var iconPath = (me.enabled) ? 'icons/ok.svg' : 'icons/disabled-ok.svg';
-        me.browser.browserAction.setIcon({ path: iconPath });
+        me.browser.browserAction.setIcon({ path: iconPath, tabId: me.tabId });
     };
 
     me.getReport = function () {
