@@ -89,9 +89,9 @@ function ErrorIndicator(browser) {
     };
 
     me.hideErrors = function () {
-        me.browser.browserAction.setBadgeText({ text: '', tabId: me.tabId });
         var iconPath = (me.enabled) ? 'icons/ok.svg' : 'icons/disabled-ok.svg';
         me.browser.browserAction.setIcon({ path: iconPath, tabId: me.tabId });
+        me.browser.browserAction.setBadgeText({ text: '', tabId: me.tabId });
     };
 
     me.getReport = function () {

@@ -2,7 +2,7 @@
 
 QUnit.test('shows error count in active tab', function (assert) {
     simulateTabError(1);
-    activateTab(2)
+    activateTab(2);
     simulateTabError(2);
     simulateTabError(2);
 

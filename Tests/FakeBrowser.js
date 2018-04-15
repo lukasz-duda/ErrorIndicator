@@ -27,6 +27,11 @@ function FakeBrowser() {
         me.tabs.onRemovedListener(tabId);
     };
 
+    me.focusWindowWithTab = function (tabId) {
+        me.tabs.activeTabId = tabId;
+        me.windows.onFocusChangedListener();
+    }
+
     me.webRequestCompleted = function (details) {
         me.webRequest.onCompletedListener(details);
     };
@@ -68,6 +73,16 @@ function FakeBrowser() {
                 resolve(tabs);
             });
         }
+    };
+
+    me.windows = {
+        onFocusChangedListener: null,
+
+        onFocusChanged: {
+            addListener: function (listener) {
+                me.windows.onFocusChangedListener = listener;
+            }
+        },
     };
 
     me.webRequest = {

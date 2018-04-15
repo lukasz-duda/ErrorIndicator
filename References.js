@@ -5,6 +5,7 @@
 /// <reference path="Tests/DateProviderStub.js" />
 /// <reference path="Tests/ErrorIndicatorTest.js" />
 /// <reference path="Tests/MultipleTabsTest.js" />
+/// <reference path="Tests/MultipleWindowsTest.js" />
 /// <reference path="Source/ErrorDetails.js" />
 /// <reference path="Source/UserErrorDetails.js" />
 /// <reference path="Source/PageObserver.js" />

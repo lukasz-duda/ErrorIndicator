@@ -56,6 +56,10 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         }
     };
 
+    me.onWindowFocusChanged = function () {
+        me.updateActiveTab();
+    };
+
     me.webRequestCompleted = function (details) {
         var notRelatedToTab = (details.tabId == -1);
         var notHttpError = (details.statusCode < 400);
@@ -75,7 +79,7 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         me.errorIndicator.addError(tabError);
     };
 
-    me.initialize = function () {
+    me.updateActiveTab = function () {
         var selectTab = function (tabs) {
             var activeTab = tabs[0];
             me.errorIndicator.selectTab(activeTab.id);
@@ -85,10 +89,11 @@ function BackgroundListener(dateProvider, browser, errorIndicator) {
         gettingActiveTab.then(selectTab);
     };
 
-    me.initialize();
+    me.updateActiveTab();
     me.browser.runtime.onMessage.addListener(me.onMessage);
     me.browser.tabs.onActivated.addListener(me.onTabActivated);
     me.browser.tabs.onRemoved.addListener(me.onTabRemoved);
     me.browser.tabs.onUpdated.addListener(me.onTabUpdated);
+    me.browser.windows.onFocusChanged.addListener(me.onWindowFocusChanged);
     me.browser.webRequest.onCompleted.addListener(me.webRequestCompleted, { urls: ['<all_urls>'] });
 }
