@@ -6,6 +6,7 @@ let errorIndicator = null
 let reportContainer = null;
 let report = null;
 let options = null;
+let optionsContainer = null;
 
 QUnit.module('error indicator', {
     beforeEach: function () {
@@ -21,9 +22,13 @@ setUpNewIndicator = function () {
     pageObserver = new PageObserver(fakeWindow, fakeBrowser);
     errorIndicator = new ErrorIndicator(fakeBrowser);
     new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
-    reportContainer = document.getElementById('qunit-fixture');
+    const testContainer = document.getElementById('qunit-fixture');
+    reportContainer = document.createElement('div');
+    testContainer.appendChild(reportContainer)
     report = new Report(reportContainer, fakeBrowser);
-    options = new Options(fakeBrowser);
+    optionsContainer = document.createElement('div');
+    testContainer.appendChild(optionsContainer)
+    options = new Options(optionsContainer, fakeBrowser);
 }
 
 function activateTab(tabId) {

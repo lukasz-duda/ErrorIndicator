@@ -24,5 +24,21 @@
   "removeErrorsButton": {
     "message": "Usuń błędy",
     "description": "Etykieta przycisku do usuwania listy błędów."
+  },
+  "ignoreErrorsTitle": {
+    "message": "Ignoruj",
+    "description": "Tytuł grupy ignorowanych typów błędów."
+  },
+  "ignoreWebErrorLabel": {
+    "message": "błędy sieciowe",
+    "description": "Etykieta pola checkbox ignoruj błędy sieciowe."
+  },
+  "ignoreWindowErrorLabel": {
+    "message": "błędy z okna",
+    "description": "Etykieta pola checkbox ignoruj błędy z okna."
+  },
+  "ignoreConsoleErrorLabel": {
+    "message": "błedy z konsoli",
+    "description": "Etykieta pola checkbox ignoruj błędy z konsoli."
   }
 }

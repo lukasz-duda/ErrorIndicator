@@ -1,0 +1,1 @@
+new Options(document.body, browser);

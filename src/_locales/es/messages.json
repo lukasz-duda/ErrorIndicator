@@ -24,5 +24,21 @@
   "removeErrorsButton": {
     "message": "Eliminar errores",
     "description": "Etiqueta del botón para eliminar errores."
+  },
+  "ignoreErrorsTitle": {
+    "message": "Ignorar",
+    "description": "Ignore errors group title."
+  },
+  "ignoreWebErrorLabel": {
+    "message": "web",
+    "description": "Ignore web error checkbox label."
+  },
+  "ignoreWindowErrorLabel": {
+    "message": "window",
+    "description": "Ignore window error checkbox label."
+  },
+  "ignoreConsoleErrorLabel": {
+    "message": "console",
+    "description": "Ignore console error checkbox label."
   }
 }

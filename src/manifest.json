@@ -19,6 +19,9 @@
       "16": "icons/ok.svg"
     }
   },
+  "options_ui": {
+    "page": "options.html"
+  },
   "content_scripts": [
     {
       "matches": [
