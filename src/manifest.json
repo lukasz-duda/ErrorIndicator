@@ -25,8 +25,8 @@
         "<all_urls>"
       ],
       "js": [
-        "error-details.js",
-        "user-error-details.js",
+        "window-error-details.js",
+        "console-error-details.js",
         "page-observer.js",
         "content-script.js"
       ],

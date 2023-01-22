@@ -20,11 +20,12 @@
     padding-bottom: 3px;
 }
 
-.error-message {
+.window-error-message,
+.web-error-message {
     color: #d92015;
 }
 
-.user-error-message {
+.console-error-message {
     color: #d99100;
 }
 

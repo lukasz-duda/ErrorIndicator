@@ -9,7 +9,7 @@
 
 function simulateTabError(tabId) {
     fakeBrowser.senderTab(tabId);
-    simulateError();
+    simulateWindowError();
 }
 
 QUnit.test('no errors in new tab', function (assert) {

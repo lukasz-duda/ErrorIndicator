@@ -35,6 +35,10 @@
         me.errorIndicator.switchOff();
     };
 
+    me.ignore = function (messageTypes) {
+        me.errorIndicator.ignore(messageTypes);
+    };
+
     me.removeTabErrors = function () {
         me.errorIndicator.removeTabErrors();
     };
@@ -69,7 +73,7 @@
         const tabError = new TabError({
             tabId: details.tabId,
             message: details.statusLine,
-            messageType: 'error',
+            messageType: 'web-error',
             source: details.url,
             timeStamp: me.dateProvider.now()
         });

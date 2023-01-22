@@ -3,11 +3,16 @@
     me.browser = browser;
 
     me.enabled = true;
+    me.ignoredMessageTypes = [];
     me.tabId = null;
     me.allErrors = [];
 
     me.addError = function (tabError) {
         if (me.disabled()) {
+            return;
+        }
+
+        if (me.ignoredMessageTypes.includes(tabError.messageType)) {
             return;
         }
 
@@ -113,7 +118,10 @@
     };
 
     me.saveSettings = function () {
-        me.browser.storage.local.set({ enabled: me.enabled });
+        me.browser.storage.local.set({
+            enabled: me.enabled,
+            ignoredMessageTypes: me.ignoredMessageTypes
+        });
     };
 
     me.switchOn = function () {
@@ -122,8 +130,14 @@
         me.saveSettings();
     };
 
+    me.ignore = function (messageTypes) {
+        me.ignoredMessageTypes = messageTypes;
+        me.saveSettings();
+    };
+
     me.settingsLoaded = function (settings) {
         me.enabled = (settings.enabled != null) ? settings.enabled : me.enabled;
+        me.ignoredMessageTypes = (settings.ignoredMessageTypes != null) ? settings.ignoredMessageTypes : me.ignoredMessageTypes;
         me.refresh();
     };
 

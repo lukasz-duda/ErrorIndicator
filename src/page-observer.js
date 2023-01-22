@@ -5,7 +5,7 @@
 
     me.window.addEventListener('error', function (event) {
         const eventError = event.error;
-        const error = new ErrorDetails(
+        const error = new WindowErrorDetails(
             eventError.message,
             eventError.fileName,
             eventError.lineNumber,
@@ -21,13 +21,13 @@
 
     me.handleConsoleError = me.window.console.error;
 
-    me.addUserError = function (message) {
-        const userError = new UserErrorDetails(message);
-        me.addError(userError);
+    me.addConsoleError = function (message) {
+        const consoleError = new ConsoleErrorDetails(message);
+        me.addError(consoleError);
 
         const args = Array.from(arguments);
         me.handleConsoleError.apply(this, args);
     };
 
-    exportFunction(me.addUserError, window.console, { defineAs: 'error' });
+    exportFunction(me.addConsoleError, window.console, { defineAs: 'error' });
 }

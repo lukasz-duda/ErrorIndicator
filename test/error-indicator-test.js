@@ -5,11 +5,12 @@ let dateProvider = null;
 let errorIndicator = null
 let reportContainer = null;
 let report = null;
+let options = null;
 
 QUnit.module('error indicator', {
     beforeEach: function () {
-        fakeBrowser = new FakeBrowser();
         fakeWindow = new FakeWindow();
+        fakeBrowser = new FakeBrowser();
         dateProvider = new DateProviderStub();
         setUpNewIndicator();
         activateTab(1);
@@ -19,9 +20,10 @@ QUnit.module('error indicator', {
 setUpNewIndicator = function () {
     pageObserver = new PageObserver(fakeWindow, fakeBrowser);
     errorIndicator = new ErrorIndicator(fakeBrowser);
-    const backgroundListener = new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
+    new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);
+    options = new Options(fakeBrowser);
 }
 
 function activateTab(tabId) {
@@ -43,7 +45,7 @@ QUnit.test('adds error to report', function (assert) {
 function assertErrorListItem(assert, listItem, expectedSource, expectedMessage) {
     const errorSource = listItem.querySelector('.error-source');
     assert.equal(errorSource.textContent, expectedSource);
-    const errorMessage = listItem.querySelector('.error-message');
+    const errorMessage = listItem.querySelector('.window-error-message');
     assert.equal(errorMessage.textContent, expectedMessage);
 }
 
@@ -62,8 +64,8 @@ QUnit.test('adds errors to report', function (assert) {
 });
 
 QUnit.test('removes errors from report', function (assert) {
-    simulateError();
-    simulateError();
+    simulateWindowError();
+    simulateWindowError();
 
     report.show();
     report.removeErrors();
@@ -83,7 +85,7 @@ QUnit.test('without error source defined shows empty source', function (assert) 
 });
 
 QUnit.test('indicates error', function (assert) {
-    simulateError();
+    simulateWindowError();
 
     assertErrorIcon(assert);
 });
@@ -98,13 +100,13 @@ function assertIcon(assert, iconPath) {
     assert.equal(iconDetails.tabId, fakeBrowser.tabs.activeTabId);
 }
 
-function simulateError() {
+function simulateWindowError() {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
 }
 
 QUnit.test('shows error count', function (assert) {
-    simulateError();
-    simulateError();
+    simulateWindowError();
+    simulateWindowError();
 
     assertBadgeText(assert, '2');
 });
@@ -116,7 +118,7 @@ function assertBadgeText(assert, expectedText) {
 }
 
 QUnit.test('shows remove errors button', function (assert) {
-    simulateError();
+    simulateWindowError();
 
     report.show();
 
@@ -149,8 +151,8 @@ function assertNoBadgeText(assert) {
 }
 
 QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
-    simulateError();
-    simulateError();
+    simulateWindowError();
+    simulateWindowError();
 
     report.show();
     report.removeErrors();
@@ -165,8 +167,8 @@ QUnit.test('translates title', function (assert) {
 });
 
 QUnit.test('shows header', function (assert) {
-    simulateError();
-    simulateError();
+    simulateWindowError();
+    simulateWindowError();
 
     report.show();
 
@@ -174,7 +176,7 @@ QUnit.test('shows header', function (assert) {
     assert.equal(header.textContent, 'detectedErrorsCount2Translation');
 });
 
-QUnit.test('reports console error message as user error', function (assert) {
+QUnit.test('reports console error message as console error', function (assert) {
     fakeWindow.console.error('console error message 1');
 
     report.show();
@@ -183,8 +185,8 @@ QUnit.test('reports console error message as user error', function (assert) {
     assert.equal(errorList.length, 1);
     const listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
-    const userError = listItems[0].querySelector('.user-error-message');
-    assert.equal(userError.textContent, 'console error message 1');
+    const consoleError = listItems[0].querySelector('.console-error-message');
+    assert.equal(consoleError.textContent, 'console error message 1');
 });
 
 QUnit.test('doesn\'t remove default console error handler', function (assert) {
@@ -199,9 +201,9 @@ QUnit.test('doesn\'t remove default console error handler', function (assert) {
 
 QUnit.test('shows error timestamps', function (assert) {
     dateProvider.setUpNow(new Date(2000, 0, 2, 12, 3, 4));
-    simulateError();
+    simulateWindowError();
     dateProvider.setUpNow(new Date(2001, 4, 6, 13, 7, 8));
-    simulateError();
+    simulateWindowError();
 
     report.show();
 
@@ -248,7 +250,7 @@ QUnit.test('after switching off and switching on shows switch off button', funct
 });
 
 QUnit.test('after switching off removes errors', function (assert) {
-    simulateError();
+    simulateWindowError();
 
     report.switchOff();
 
@@ -273,7 +275,7 @@ QUnit.test('after switching off and on shows changes icon to enabled', function 
 QUnit.test('after switching off new errors are ignored', function (assert) {
     report.switchOff();
 
-    simulateError();
+    simulateWindowError();
 
     assert.notOk(errorIndicator.hasErrors());
 });
