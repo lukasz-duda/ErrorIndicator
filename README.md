@@ -1,2 +1,3 @@
-# ErrorIndicator
-Firefox add-on providing common place for reporting errors from all pages.
+# Error indicator
+
+Firefox add-on providing common place for reporting errors.

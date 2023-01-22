@@ -1,0 +1,28 @@
+﻿{
+  "errorIndicatorTitle": {
+    "message": "Error indicator",
+    "description": "The title of error indicator."
+  },
+  "detectedErrorsCount": {
+    "message": "Detected $COUNT$ errors",
+    "description": "Tells the user how many errors have been detected.",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "switchOffButton": {
+    "message": "Switch off",
+    "description": "Label of button for switching off."
+  },
+  "switchOnButton": {
+    "message": "Switch on",
+    "description": "Label of button for switching on."
+  },
+  "removeErrorsButton": {
+    "message": "Remove errors",
+    "description": "Label of button for removing errors."
+  }
+}

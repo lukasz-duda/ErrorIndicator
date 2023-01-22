@@ -1,0 +1,45 @@
+{
+  "manifest_version": 2,
+  "name": "Error indicator",
+  "description": "Provides common place for reporting errors.",
+  "version": "1.12",
+  "default_locale": "en",
+  "permissions": [
+    "storage",
+    "webRequest",
+    "<all_urls>"
+  ],
+  "icons": {
+    "32": "icons/error.svg"
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_popup": "report.html",
+    "default_icon": {
+      "16": "icons/ok.svg"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "error-details.js",
+        "user-error-details.js",
+        "page-observer.js",
+        "content-script.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "scripts": [
+      "date-provider.js",
+      "error-indicator.js",
+      "tab-error.js",
+      "background-listener.js",
+      "background.js"
+    ]
+  }
+}

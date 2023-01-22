@@ -1,0 +1,1 @@
+﻿new PageObserver(window, browser);
