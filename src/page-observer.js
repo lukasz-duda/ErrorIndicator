@@ -1,11 +1,11 @@
 ﻿function PageObserver(window, browser) {
-    var me = this;
+    const me = this;
     me.window = window;
     me.browser = browser;
 
     me.window.addEventListener('error', function (event) {
-        var eventError = event.error;
-        var error = new ErrorDetails(
+        const eventError = event.error;
+        const error = new ErrorDetails(
             eventError.message,
             eventError.fileName,
             eventError.lineNumber,
@@ -15,17 +15,17 @@
     });
 
     me.addError = function (error) {
-        var action = { name: 'addError', args: error };
+        const action = { name: 'addError', args: error };
         me.browser.runtime.sendMessage(action);
     };
 
     me.handleConsoleError = me.window.console.error;
 
     me.addUserError = function (message) {
-        var userError = new UserErrorDetails(message);
+        const userError = new UserErrorDetails(message);
         me.addError(userError);
 
-        var args = Array.from(arguments);
+        const args = Array.from(arguments);
         me.handleConsoleError.apply(this, args);
     };
 

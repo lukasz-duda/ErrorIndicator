@@ -23,7 +23,7 @@ QUnit.test('no errors reported in new tab', function (assert) {
     simulateTabError(1);
     activateTab(2);
 
-    var report = errorIndicator.getReport();
+    const report = errorIndicator.getReport();
     assert.notOk(report.hasError);
     assert.equal(report.errorsCount, 0)
     assert.equal(report.errors.length, 0);
@@ -69,7 +69,7 @@ QUnit.test('remove errors button removes tab errors only', function (assert) {
     activateTab(2);
     simulateTabError(2);
     report.show();
-    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
+    const removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
 
     removeErrorsButton.click();
 

@@ -1,5 +1,5 @@
 ﻿function ErrorIndicator(browser) {
-    var me = this;
+    const me = this;
     me.browser = browser;
 
     me.enabled = true;
@@ -36,10 +36,10 @@
     };
 
     me.tabErrors = function () {
-        var tabErrors = [];
+        const tabErrors = [];
 
-        for (var i = 0; i < me.allErrors.length; i++) {
-            var error = me.allErrors[i];
+        for (let i = 0; i < me.allErrors.length; i++) {
+            const error = me.allErrors[i];
             if (error.tabId == me.tabId) {
                 tabErrors.push(error);
             }
@@ -66,11 +66,11 @@
     };
 
     me.removeTabErrors = function (tabId) {
-        var removeFromTabId = tabId || me.tabId;
-        var remainingErrors = [];
+        const removeFromTabId = tabId || me.tabId;
+        const remainingErrors = [];
 
-        for (var i = 0; i < me.allErrors.length; i++) {
-            var error = me.allErrors[i];
+        for (let i = 0; i < me.allErrors.length; i++) {
+            const error = me.allErrors[i];
             if (error.tabId != removeFromTabId) {
                 remainingErrors.push(error);
             }
@@ -82,12 +82,12 @@
 
     me.indicateErrors = function () {
         me.browser.browserAction.setIcon({ path: 'icons/error.svg', tabId: me.tabId });
-        var badgeTextDetails = { text: me.tabErrorsCount().toString(), tabId: me.tabId };
+        const badgeTextDetails = { text: me.tabErrorsCount().toString(), tabId: me.tabId };
         me.browser.browserAction.setBadgeText(badgeTextDetails);
     };
 
     me.hideErrors = function () {
-        var iconPath = (me.enabled) ? 'icons/ok.svg' : 'icons/disabled-ok.svg';
+        const iconPath = (me.enabled) ? 'icons/ok.svg' : 'icons/disabled-ok.svg';
         me.browser.browserAction.setIcon({ path: iconPath, tabId: me.tabId });
         me.browser.browserAction.setBadgeText({ text: '', tabId: me.tabId });
     };
@@ -127,8 +127,8 @@
         me.refresh();
     };
 
-    var title = browser.i18n.getMessage('errorIndicatorTitle');
+    const title = browser.i18n.getMessage('errorIndicatorTitle');
     me.browser.browserAction.setTitle({ title: title });
-    var loadingSettings = me.browser.storage.local.get();
+    const loadingSettings = me.browser.storage.local.get();
     loadingSettings.then(me.settingsLoaded);
 }

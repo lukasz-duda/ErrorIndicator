@@ -1,10 +1,10 @@
-﻿var fakeWindow = null;
-var fakeBrowser = null;
-var pageObserver = null;
-var dateProvider = null;
-var errorIndicator = null
-var reportContainer = null;
-var report = null;
+﻿let fakeWindow = null;
+let fakeBrowser = null;
+let pageObserver = null;
+let dateProvider = null;
+let errorIndicator = null
+let reportContainer = null;
+let report = null;
 
 QUnit.module('error indicator', {
     beforeEach: function () {
@@ -19,7 +19,7 @@ QUnit.module('error indicator', {
 setUpNewIndicator = function () {
     pageObserver = new PageObserver(fakeWindow, fakeBrowser);
     errorIndicator = new ErrorIndicator(fakeBrowser);
-    var backgroundListener = new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
+    const backgroundListener = new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
     reportContainer = document.getElementById('qunit-fixture');
     report = new Report(reportContainer, fakeBrowser);
 }
@@ -33,17 +33,17 @@ QUnit.test('adds error to report', function (assert) {
 
     report.show();
 
-    var errorList = reportContainer.getElementsByClassName('error-list');
+    const errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    const listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
     assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
 });
 
 function assertErrorListItem(assert, listItem, expectedSource, expectedMessage) {
-    var errorSource = listItem.querySelector('.error-source');
+    const errorSource = listItem.querySelector('.error-source');
     assert.equal(errorSource.textContent, expectedSource);
-    var errorMessage = listItem.querySelector('.error-message');
+    const errorMessage = listItem.querySelector('.error-message');
     assert.equal(errorMessage.textContent, expectedMessage);
 }
 
@@ -53,9 +53,9 @@ QUnit.test('adds errors to report', function (assert) {
 
     report.show();
 
-    var errorList = reportContainer.getElementsByClassName('error-list');
+    const errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    const listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 2);
     assertErrorListItem(assert, listItems[0], 'source 1:1:2', 'message 1');
     assertErrorListItem(assert, listItems[1], 'source 2:3:4', 'message 2');
@@ -68,7 +68,7 @@ QUnit.test('removes errors from report', function (assert) {
     report.show();
     report.removeErrors();
 
-    var errorList = reportContainer.getElementsByClassName('error-list');
+    const errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList[0].childNodes.length, 0);
 });
 
@@ -77,8 +77,8 @@ QUnit.test('without error source defined shows empty source', function (assert) 
 
     report.show();
 
-    var listItem = reportContainer.querySelector('.error-list-item');
-    var errorSource = listItem.querySelector('.error-source');
+    const listItem = reportContainer.querySelector('.error-list-item');
+    const errorSource = listItem.querySelector('.error-source');
     assert.equal(errorSource.textContent, '');
 });
 
@@ -93,7 +93,7 @@ function assertErrorIcon(assert) {
 }
 
 function assertIcon(assert, iconPath) {
-    var iconDetails = fakeBrowser.browserAction.getIcon();
+    const iconDetails = fakeBrowser.browserAction.getIcon();
     assert.equal(iconDetails.path, iconPath);
     assert.equal(iconDetails.tabId, fakeBrowser.tabs.activeTabId);
 }
@@ -110,7 +110,7 @@ QUnit.test('shows error count', function (assert) {
 });
 
 function assertBadgeText(assert, expectedText) {
-    var badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
+    const badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
     assert.equal(badgeTextDetails.text, expectedText);
     assert.equal(badgeTextDetails.tabId, fakeBrowser.tabs.activeTabId);
 }
@@ -120,7 +120,7 @@ QUnit.test('shows remove errors button', function (assert) {
 
     report.show();
 
-    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
+    const removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
     assert.equal(removeErrorsButton.innerText, 'removeErrorsButtonTranslation');
 });
 
@@ -131,7 +131,7 @@ QUnit.test('without errors doesn\'t show remove errors button', function (assert
 });
 
 function assertNoRemoveErrorsButton(assert) {
-    var removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
+    const removeErrorsButton = reportContainer.querySelector('.remove-errors-button');
     assert.equal(null, removeErrorsButton);
 }
 
@@ -160,7 +160,7 @@ QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
 });
 
 QUnit.test('translates title', function (assert) {
-    var titleDetails = fakeBrowser.browserAction.getTitle();
+    const titleDetails = fakeBrowser.browserAction.getTitle();
     assert.equal(titleDetails.title, 'errorIndicatorTitleTranslation');
 });
 
@@ -170,7 +170,7 @@ QUnit.test('shows header', function (assert) {
 
     report.show();
 
-    var header = reportContainer.querySelector('.header-text');
+    const header = reportContainer.querySelector('.header-text');
     assert.equal(header.textContent, 'detectedErrorsCount2Translation');
 });
 
@@ -179,11 +179,11 @@ QUnit.test('reports console error message as user error', function (assert) {
 
     report.show();
 
-    var errorList = reportContainer.getElementsByClassName('error-list');
+    const errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    const listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
-    var userError = listItems[0].querySelector('.user-error-message');
+    const userError = listItems[0].querySelector('.user-error-message');
     assert.equal(userError.textContent, 'console error message 1');
 });
 
@@ -191,7 +191,7 @@ QUnit.test('doesn\'t remove default console error handler', function (assert) {
     fakeWindow.console.error('console error message 1', '2', '3');
 
     assert.equal(fakeWindow.consoleErrors.length, 1);
-    var consoleError = fakeWindow.consoleErrors[0];
+    const consoleError = fakeWindow.consoleErrors[0];
     assert.equal(consoleError.message, 'console error message 1');
     assert.equal(consoleError.substitutionString1, '2');
     assert.equal(consoleError.substitutionString2, '3');
@@ -205,12 +205,12 @@ QUnit.test('shows error timestamps', function (assert) {
 
     report.show();
 
-    var errorList = reportContainer.querySelector('.error-list');
-    var listItems = errorList.querySelectorAll('.error-list-item');
+    const errorList = reportContainer.querySelector('.error-list');
+    const listItems = errorList.querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 2);
-    var firstErrorTime = listItems[0].querySelector('.error-time-stamp');
+    const firstErrorTime = listItems[0].querySelector('.error-time-stamp');
     assert.equal(firstErrorTime.textContent, '2000-01-02 12:03:04');
-    var secondErrorTime = listItems[1].querySelector('.error-time-stamp');
+    const secondErrorTime = listItems[1].querySelector('.error-time-stamp');
     assert.equal(secondErrorTime.textContent, '2001-05-06 13:07:08');
 });
 
@@ -221,7 +221,7 @@ QUnit.test('shows switch off button', function (assert) {
 });
 
 function assertSwitchOffButton(assert) {
-    var switchButton = reportContainer.querySelector('.switch-button');
+    const switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOffButtonTranslation')
 }
 
@@ -234,7 +234,7 @@ QUnit.test('after switching off shows switch on button', function (assert) {
 });
 
 function assertSwitchOnButton(assert) {
-    var switchButton = reportContainer.querySelector('.switch-button');
+    const switchButton = reportContainer.querySelector('.switch-button');
     assert.equal(switchButton.textContent, 'switchOnButtonTranslation')
 }
 
@@ -252,7 +252,7 @@ QUnit.test('after switching off removes errors', function (assert) {
 
     report.switchOff();
 
-    var listItems = reportContainer.querySelectorAll('.error-list-item');
+    const listItems = reportContainer.querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 0);
     assertNoBadgeText(assert);
 });

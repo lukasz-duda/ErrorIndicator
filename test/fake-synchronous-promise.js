@@ -1,5 +1,5 @@
 ﻿function FakeSynchronousPromise(executor) {
-    var me = this;
+    const me = this;
     me.result = null;
 
     me.resolve = function (result) {

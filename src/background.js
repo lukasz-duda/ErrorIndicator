@@ -1,3 +1,3 @@
-﻿var dateProvider = new DateProvider();
-var errorIndicator = new ErrorIndicator(browser);
+﻿const dateProvider = new DateProvider();
+const errorIndicator = new ErrorIndicator(browser);
 new BackgroundListener(dateProvider, browser, errorIndicator);

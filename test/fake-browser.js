@@ -1,5 +1,5 @@
 ﻿function FakeBrowser() {
-    var me = this;
+    const me = this;
 
     me.senderTab = function (tabId) {
         me.runtime.senderTabId = tabId;
@@ -7,17 +7,17 @@
 
     me.activateTab = function (tabId) {
         me.tabs.activeTabId = tabId;
-        var activeInfo = { tabId: tabId };
+        const activeInfo = { tabId: tabId };
         me.tabs.onActivatedListener(activeInfo);
     };
 
     me.reloadTab = function (tabId) {
-        var changeInfo = { status: 'loading' };
+        const changeInfo = { status: 'loading' };
         me.tabs.onUpdatedListener(tabId, changeInfo);
     };
 
     me.updateTab = function (tabId) {
-        var changeInfo = { status: 'complete' };
+        const changeInfo = { status: 'complete' };
         me.tabs.onUpdatedListener(tabId, changeInfo);
     };
 
@@ -62,7 +62,7 @@
         },
 
         query: function (queryInfo) {
-            var tabs = [];
+            const tabs = [];
             if (queryInfo.active && queryInfo.currentWindow) {
                 tabs.push({ id: me.tabs.activeTabId });
             }
@@ -88,7 +88,7 @@
 
         onCompleted: {
             addListener: function (listener, filter) {
-                var servesAllUrls = (filter.urls[0] == '<all_urls>');
+                const servesAllUrls = (filter.urls[0] == '<all_urls>');
                 if (servesAllUrls) {
                     me.webRequest.onCompletedListener = listener;
                 }
@@ -108,7 +108,7 @@
         },
 
         sendMessage: function (message) {
-            var sender = {
+            const sender = {
                 tab: { id: me.runtime.senderTabId }
             };
 
@@ -152,7 +152,7 @@
 
     me.i18n = {
         getMessage: function (messageName, substitusion) {
-            var substitutionText = substitusion || '';
+            const substitutionText = substitusion || '';
             return messageName + substitutionText + "Translation";
         }
     };

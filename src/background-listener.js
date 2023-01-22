@@ -1,16 +1,16 @@
 ﻿function BackgroundListener(dateProvider, browser, errorIndicator) {
-    var me = this;
+    const me = this;
     me.dateProvider = dateProvider;
     me.browser = browser;
     me.errorIndicator = errorIndicator;
 
     me.onMessage = function (action, sender, respond) {
-        var response = me[action.name](action.args, sender);
+        const response = me[action.name](action.args, sender);
         respond(response);
     };
 
     me.addError = function (errorDetails, sender) {
-        var tabError = new TabError({
+        const tabError = new TabError({
             tabId: sender.tab.id,
             message: errorDetails.message,
             messageType: errorDetails.messageType,
@@ -48,7 +48,7 @@
     };
 
     me.onTabUpdated = function (tabId, changeInfo, tabInfo) {
-        var tabReloaded = changeInfo.status == 'loading';
+        const tabReloaded = changeInfo.status == 'loading';
         if (tabReloaded) {
             me.errorIndicator.removeTabErrors(tabId);
         }
@@ -59,14 +59,14 @@
     };
 
     me.webRequestCompleted = function (details) {
-        var notRelatedToTab = (details.tabId == -1);
-        var notHttpError = (details.statusCode < 400);
+        const notRelatedToTab = (details.tabId == -1);
+        const notHttpError = (details.statusCode < 400);
 
         if (notRelatedToTab || notHttpError) {
             return;
         }
 
-        var tabError = new TabError({
+        const tabError = new TabError({
             tabId: details.tabId,
             message: details.statusLine,
             messageType: 'error',
@@ -78,12 +78,12 @@
     };
 
     me.updateActiveTab = function () {
-        var selectTab = function (tabs) {
-            var activeTab = tabs[0];
+        const selectTab = function (tabs) {
+            const activeTab = tabs[0];
             me.errorIndicator.selectTab(activeTab.id);
         };
 
-        var gettingActiveTab = me.browser.tabs.query({ active: true, currentWindow: true });
+        const gettingActiveTab = me.browser.tabs.query({ active: true, currentWindow: true });
         gettingActiveTab.then(selectTab);
     };
 

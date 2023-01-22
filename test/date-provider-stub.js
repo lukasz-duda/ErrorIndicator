@@ -1,5 +1,5 @@
 ﻿function DateProviderStub() {
-    var me = this;
+    const me = this;
 
     me.timeStamp = new Date(2000, 0, 1, 12, 13, 14);
 

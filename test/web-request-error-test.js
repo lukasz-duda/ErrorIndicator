@@ -45,7 +45,7 @@ QUnit.test('adds error details', function (assert) {
     webRequestInTab(5, 503, 'http://b');
 
     activateTab(2);
-    var tab2Error = errorIndicator.tabErrors()[0];
+    const tab2Error = errorIndicator.tabErrors()[0];
     assert.equal(tab2Error.message, 'HTTP/1.1 404');
     assert.equal(tab2Error.messageType, 'error');
     assert.equal(tab2Error.source, 'http://a');
@@ -53,7 +53,7 @@ QUnit.test('adds error details', function (assert) {
     assert.equal(tab2Error.lineNumber, null);
     assert.equal(tab2Error.columnNumber, null);
     activateTab(5);
-    var tab5Error = errorIndicator.tabErrors()[0];
+    const tab5Error = errorIndicator.tabErrors()[0];
     assert.equal(tab5Error.message, 'HTTP/1.1 503');
     assert.equal(tab5Error.source, 'http://b');
 });
@@ -63,9 +63,9 @@ QUnit.test('report doesn\'t include empty line number', function (assert) {
 
     report.show();
 
-    var errorList = reportContainer.getElementsByClassName('error-list');
+    const errorList = reportContainer.getElementsByClassName('error-list');
     assert.equal(errorList.length, 1);
-    var listItems = errorList[0].querySelectorAll('.error-list-item');
+    const listItems = errorList[0].querySelectorAll('.error-list-item');
     assert.equal(listItems.length, 1);
     assertErrorListItem(assert, listItems[0], 'source 1', 'message 1');
 });

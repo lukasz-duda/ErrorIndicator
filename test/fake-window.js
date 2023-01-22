@@ -1,5 +1,5 @@
 ﻿function FakeWindow() {
-    var me = this;
+    const me = this;
 
     me.errorListeners = [];
 
@@ -10,16 +10,16 @@
     };
 
     me.onerror = function (message, source, lineNumber, columnNumber) {
-        for (var i = 0; i < fakeWindow.errorListeners.length; i++) {
-            var errorListener = fakeWindow.errorListeners[i];
+        for (let i = 0; i < fakeWindow.errorListeners.length; i++) {
+            const errorListener = fakeWindow.errorListeners[i];
 
-            var error = {
+            const error = {
                 message: message,
                 fileName: source,
                 lineNumber: lineNumber,
                 columnNumber: columnNumber
             }
-            var event = { error: error };
+            const event = { error: error };
             errorListener(event);
         }
     };
@@ -28,7 +28,7 @@
 
     me.console = {
         error: function (message, substitutionString1, substitutionString2) {
-            var consoleError = {
+            const consoleError = {
                 message: message,
                 substitutionString1: substitutionString1,
                 substitutionString2: substitutionString2
