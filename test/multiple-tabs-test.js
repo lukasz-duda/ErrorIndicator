@@ -7,11 +7,6 @@
     assertBadgeText(assert, '2');
 });
 
-function simulateTabError(tabId) {
-    fakeBrowser.senderTab(tabId);
-    simulateWindowError();
-}
-
 QUnit.test('no errors in new tab', function (assert) {
     simulateTabError(1);
     activateTab(2);
@@ -44,7 +39,7 @@ function reloadTab(tabId) {
     fakeBrowser.reloadTab(tabId);
 }
 
-QUnit.test('tab refresh doesn\'t remove different tab\'s errros', function (assert) {
+QUnit.test('tab refresh doesn\'t remove different tab\'s errors', function (assert) {
     simulateTabError(1);
     activateTab(2);
     simulateTabError(2);
@@ -92,10 +87,3 @@ QUnit.test('tab removal removes it\'s errors', function (assert) {
 function removeTab(tabId) {
     fakeBrowser.removeTab(tabId);
 }
-
-QUnit.test('with indicator loaded after tab activated, shows tab error', function (assert) {
-    setUpNewIndicator();
-    simulateTabError(1);
-
-    assert.ok(errorIndicator.hasTabErrors());
-});

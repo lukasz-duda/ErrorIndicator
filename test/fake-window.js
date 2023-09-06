@@ -4,7 +4,7 @@
     me.errorListeners = [];
 
     me.addEventListener = function (type, listener) {
-        if (type == 'error') {
+        if (type === 'error') {
             fakeWindow.errorListeners.push(listener);
         }
     };
@@ -35,7 +35,11 @@
             }
             me.consoleErrors.push(consoleError);
         }
-    }
+    };
+
+    me.resetConsoleErrors = function () {
+        me.consoleErrors = [];
+    };
 }
 
 function exportFunction(exportedFunction, targetScope, options) {

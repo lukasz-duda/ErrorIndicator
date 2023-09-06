@@ -34,6 +34,10 @@
         me.webRequest.onCompletedListener(details);
     };
 
+    me.resetSettings = function () {
+        me.storage.local.set({});
+    }
+
     me.tabs = {
         activeTabId: null,
 
@@ -88,7 +92,7 @@
 
         onCompleted: {
             addListener: function (listener, filter) {
-                const servesAllUrls = (filter.urls[0] == '<all_urls>');
+                const servesAllUrls = (filter.urls[0] === '<all_urls>');
                 if (servesAllUrls) {
                     me.webRequest.onCompletedListener = listener;
                 }

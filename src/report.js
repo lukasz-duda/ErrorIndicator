@@ -223,7 +223,7 @@
     };
 
     me.removeErrors = function () {
-        const action = { name: 'removeTabErrors' };
+        const action = { name: 'removeErrors' };
         const sending = browser.runtime.sendMessage(action);
         sending.then(me.refresh)
     };

@@ -4,6 +4,7 @@
 
     me.enabled = true;
     me.ignored = [];
+    me.useTabs = true;
     me.tabId = null;
     me.allErrors = [];
 
@@ -25,7 +26,8 @@
     };
 
     me.refresh = function () {
-        if (me.hasTabErrors()) {
+        const hasErrors = me.useTabs ? me.hasTabErrors() : me.hasErrors();
+        if (hasErrors) {
             me.indicateErrors();
         } else {
             me.hideErrors();
@@ -41,16 +43,7 @@
     };
 
     me.tabErrors = function () {
-        const tabErrors = [];
-
-        for (let i = 0; i < me.allErrors.length; i++) {
-            const error = me.allErrors[i];
-            if (error.tabId == me.tabId) {
-                tabErrors.push(error);
-            }
-        }
-
-        return tabErrors;
+        return me.errors().filter(error => error.tabId === me.tabId);
     };
 
     me.hasErrors = function () {
@@ -62,7 +55,7 @@
     };
 
     me.errors = function () {
-        return me.allErrors;
+        return me.allErrors.filter((error) => !me.ignored.includes(error.messageType));
     };
 
     me.selectTab = function (tabId) {
@@ -70,24 +63,24 @@
         me.refresh();
     };
 
+    me.removeErrors = function () {
+        if (me.useTabs) {
+            me.removeTabErrors();
+        } else {
+            me.removeAllErrors();
+        }
+    };
+
     me.removeTabErrors = function (tabId) {
         const removeFromTabId = tabId || me.tabId;
-        const remainingErrors = [];
-
-        for (let i = 0; i < me.allErrors.length; i++) {
-            const error = me.allErrors[i];
-            if (error.tabId != removeFromTabId) {
-                remainingErrors.push(error);
-            }
-        }
-
-        me.allErrors = remainingErrors;
+        me.allErrors = me.allErrors.filter(error => error.tabId !== removeFromTabId);
         me.refresh();
     };
 
     me.indicateErrors = function () {
+        const count = me.useTabs ? me.tabErrorsCount() : me.errorsCount();
         me.browser.browserAction.setIcon({ path: 'icons/error.svg', tabId: me.tabId });
-        const badgeTextDetails = { text: me.tabErrorsCount().toString(), tabId: me.tabId };
+        const badgeTextDetails = { text: count.toString(), tabId: me.tabId };
         me.browser.browserAction.setBadgeText(badgeTextDetails);
     };
 
@@ -98,6 +91,10 @@
     };
 
     me.getReport = function () {
+        return me.useTabs ? me.getTabReport() : me.getAllErrorsReport();
+    };
+
+    me.getTabReport = function () {
         return {
             hasError: me.hasTabErrors(),
             errorsCount: me.tabErrorsCount(),
@@ -106,13 +103,22 @@
         };
     };
 
+    me.getAllErrorsReport = function () {
+        return {
+            hasError: me.hasErrors(),
+            errorsCount: me.errorsCount(),
+            errors: me.errors(),
+            indicatorEnabled: me.enabled
+        };
+    };
+
     me.switchOff = function () {
         me.enabled = false;
-        me.removeErrors();
+        me.removeAllErrors();
         me.saveSettings();
     };
 
-    me.removeErrors = function () {
+    me.removeAllErrors = function () {
         me.allErrors = [];
         me.refresh();
     };
@@ -120,7 +126,8 @@
     me.saveSettings = function () {
         me.browser.storage.local.set({
             enabled: me.enabled,
-            ignored: me.ignored
+            ignored: me.ignored,
+            useTabs: me.useTabs
         });
     };
 
@@ -133,11 +140,25 @@
     me.ignore = function (messageTypes) {
         me.ignored = messageTypes;
         me.saveSettings();
+        me.refresh();
+    };
+
+    me.reportTabErrors = function () {
+        me.useTabs = true;
+        me.saveSettings();
+        me.refresh();
+    };
+
+    me.reportAllErrors = function () {
+        me.useTabs = false;
+        me.saveSettings();
+        me.refresh();
     };
 
     me.settingsLoaded = function (settings) {
         me.enabled = (settings.enabled != null) ? settings.enabled : me.enabled;
         me.ignored = (settings.ignored != null) ? settings.ignored : me.ignored;
+        me.useTabs = (settings.useTabs != null) ? settings.useTabs : me.useTabs;
         me.refresh();
     };
 

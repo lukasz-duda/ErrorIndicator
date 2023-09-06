@@ -39,20 +39,28 @@
         me.errorIndicator.ignore(messageTypes);
     };
 
-    me.removeTabErrors = function () {
-        me.errorIndicator.removeTabErrors();
+    me.reportTabErrors = function () {
+        me.errorIndicator.reportTabErrors();
+    };
+
+    me.reportAllErrors = function () {
+        me.errorIndicator.reportAllErrors();
+    };
+
+    me.removeErrors = function () {
+        me.errorIndicator.removeErrors();
     };
 
     me.onTabActivated = function (activeInfo) {
         me.errorIndicator.selectTab(activeInfo.tabId);
     };
 
-    me.onTabRemoved = function (tabId, changeInfo, tabInfo) {
+    me.onTabRemoved = function (tabId) {
         me.errorIndicator.removeTabErrors(tabId);
     };
 
-    me.onTabUpdated = function (tabId, changeInfo, tabInfo) {
-        const tabReloaded = changeInfo.status == 'loading';
+    me.onTabUpdated = function (tabId, changeInfo) {
+        const tabReloaded = changeInfo.status === 'loading';
         if (tabReloaded) {
             me.errorIndicator.removeTabErrors(tabId);
         }
@@ -63,10 +71,9 @@
     };
 
     me.webRequestCompleted = function (details) {
-        const notRelatedToTab = (details.tabId == -1);
         const notHttpError = (details.statusCode < 400);
 
-        if (notRelatedToTab || notHttpError) {
+        if (notHttpError) {
             return;
         }
 

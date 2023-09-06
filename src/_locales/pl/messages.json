@@ -25,6 +25,18 @@
     "message": "Usuń błędy",
     "description": "Etykieta przycisku do usuwania listy błędów."
   },
+  "report": {
+    "message": "Raportuj",
+    "description": "Tytuł grupy wyboru rodzaju raportu."
+  },
+  "tabErrors": {
+    "message": "błędy w wybranej zakładce",
+    "description": "Etykieta przycisku raportu błędów w wybranej zakładce."
+  },
+  "allErrors": {
+    "message": "wszystkie błędy",
+    "description": "Etykieta przycisku raportu wszystkich błędów."
+  },
   "ignoreErrorsTitle": {
     "message": "Ignoruj",
     "description": "Tytuł grupy ignorowanych typów błędów."

@@ -59,10 +59,6 @@ function ignoreConsoleError() {
     ignoreConsole.click();
 }
 
-function simulateConsoleError() {
-    fakeWindow.console.error('console error message');
-}
-
 QUnit.test('ignored window or web error, reports console error', function (assert) {
     ignoreWebError();
     ignoreWindowError();
@@ -80,7 +76,6 @@ QUnit.test('ignored web or console error, reports window error', function (asser
     simulateWindowError();
 
     assert.ok(errorIndicator.hasErrors());
-
 });
 
 QUnit.test('ignored console or window error, reports web error', function (assert) {
@@ -90,5 +85,19 @@ QUnit.test('ignored console or window error, reports web error', function (asser
     simulateWebError();
 
     assert.ok(errorIndicator.hasErrors());
+});
 
+QUnit.test('window error then ignore window error, hides error', function (assert) {
+    simulateWindowError()
+    ignoreWindowError();
+
+    assertReportsNoError(assert);
+});
+
+QUnit.test('window error then check and uncheck ignore window error, shows error', function (assert) {
+    simulateWindowError();
+    ignoreWindowError();
+    ignoreWindowError();
+
+    assertReportsError(assert);
 });

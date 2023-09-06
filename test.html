@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8">
     <title>Error indicator tests</title>
-    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.19.3.css">
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.19.4.css">
 </head>
 
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
-    <script src="https://code.jquery.com/qunit/qunit-2.19.3.js"></script>
+    <script src="https://code.jquery.com/qunit/qunit-2.19.4.js"></script>
     <script src="test/fake-synchronous-promise.js"></script>
     <script src="test/fake-window.js"></script>
     <script src="test/fake-browser.js"></script>
@@ -23,11 +23,14 @@
     <script src="src/background-listener.js"></script>
     <script src="src/report.js"></script>
     <script src="src/options.js"></script>
+    <script src="test/shared-setup.js"></script>
+    <script src="test/shared-assertions.js"></script>
     <script src="test/error-indicator-test.js"></script>
     <script src="test/multiple-tabs-test.js"></script>
     <script src="test/multiple-windows-test.js"></script>
     <script src="test/web-request-error-test.js"></script>
-    <script src="test/options-test.js"></script>
+    <script src="test/ignored-errors-test.js"></script>
+    <script src="test/report-kinds-test.js"></script>
 </body>
 
 </html>

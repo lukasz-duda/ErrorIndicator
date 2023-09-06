@@ -9,15 +9,6 @@
         assert.equal(errorIndicator.tabErrorsCount(), 5);
     });
 
-function webRequestInTab(tabId, statusCode, url) {
-    fakeBrowser.webRequestCompleted({
-        tabId: tabId,
-        statusCode: statusCode,
-        statusLine: 'HTTP/1.1 ' + statusCode,
-        url: url
-    });
-}
-
 QUnit.test('with HTTP status indicating no error, doesn\'t add error',
     function (assert) {
         webRequestInTab(1, 200);
@@ -27,10 +18,11 @@ QUnit.test('with HTTP status indicating no error, doesn\'t add error',
         assert.notOk(errorIndicator.hasErrors());
     });
 
-QUnit.test('with unspecified tab, doesn\'t add error', function (assert) {
+QUnit.test('with unspecified tab, adds error', function (assert) {
     webRequestInTab(-1, 404);
 
-    assert.notOk(errorIndicator.hasErrors());
+    assert.ok(errorIndicator.hasErrors());
+    assert.notOk(errorIndicator.hasTabErrors());
 });
 
 QUnit.test('with request from different tab, doesn\'t indicate errors in active tab',

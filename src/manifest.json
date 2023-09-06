@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Error indicator",
   "description": "Provides common place for reporting errors.",
-  "version": "1.12",
+  "version": "2",
   "default_locale": "en",
   "permissions": [
     "storage",

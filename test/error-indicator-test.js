@@ -1,39 +1,11 @@
-﻿let fakeWindow = null;
-let fakeBrowser = null;
-let pageObserver = null;
-let dateProvider = null;
-let errorIndicator = null
-let reportContainer = null;
-let report = null;
-let options = null;
-let optionsContainer = null;
-
-QUnit.module('error indicator', {
+﻿QUnit.module('error indicator', {
     beforeEach: function () {
-        fakeWindow = new FakeWindow();
-        fakeBrowser = new FakeBrowser();
-        dateProvider = new DateProviderStub();
+        resetBrowser();
+        resetWindow();
         setUpNewIndicator();
         activateTab(1);
     }
 });
-
-setUpNewIndicator = function () {
-    pageObserver = new PageObserver(fakeWindow, fakeBrowser);
-    errorIndicator = new ErrorIndicator(fakeBrowser);
-    new BackgroundListener(dateProvider, fakeBrowser, errorIndicator);
-    const testContainer = document.getElementById('qunit-fixture');
-    reportContainer = document.createElement('div');
-    testContainer.appendChild(reportContainer)
-    report = new Report(reportContainer, fakeBrowser);
-    optionsContainer = document.createElement('div');
-    testContainer.appendChild(optionsContainer)
-    options = new Options(optionsContainer, fakeBrowser);
-}
-
-function activateTab(tabId) {
-    fakeBrowser.activateTab(tabId);
-}
 
 QUnit.test('adds error to report', function (assert) {
     fakeWindow.onerror('message 1', 'source 1', 1, 2);
@@ -95,32 +67,12 @@ QUnit.test('indicates error', function (assert) {
     assertErrorIcon(assert);
 });
 
-function assertErrorIcon(assert) {
-    assertIcon(assert, 'icons/error.svg');
-}
-
-function assertIcon(assert, iconPath) {
-    const iconDetails = fakeBrowser.browserAction.getIcon();
-    assert.equal(iconDetails.path, iconPath);
-    assert.equal(iconDetails.tabId, fakeBrowser.tabs.activeTabId);
-}
-
-function simulateWindowError() {
-    fakeWindow.onerror('message 1', 'source 1', 1, 2);
-}
-
 QUnit.test('shows error count', function (assert) {
     simulateWindowError();
     simulateWindowError();
 
     assertBadgeText(assert, '2');
 });
-
-function assertBadgeText(assert, expectedText) {
-    const badgeTextDetails = fakeBrowser.browserAction.getBadgeText();
-    assert.equal(badgeTextDetails.text, expectedText);
-    assert.equal(badgeTextDetails.tabId, fakeBrowser.tabs.activeTabId);
-}
 
 QUnit.test('shows remove errors button', function (assert) {
     simulateWindowError();
@@ -146,14 +98,6 @@ QUnit.test('without any error doesn\'t indicate error', function (assert) {
     assertOkIcon(assert);
     assertNoBadgeText(assert);
 });
-
-function assertOkIcon(assert) {
-    assertIcon(assert, 'icons/ok.svg');
-}
-
-function assertNoBadgeText(assert) {
-    assertBadgeText(assert, '');
-}
 
 QUnit.test('after errors removed doesn\'t indicate error', function (assert) {
     simulateWindowError();
@@ -270,7 +214,7 @@ QUnit.test('after switching off changes icon to disabled', function (assert) {
     assertIcon(assert, 'icons/disabled-ok.svg');
 });
 
-QUnit.test('after switching off and on shows changes icon to enabled', function (assert) {
+QUnit.test('after switching off and on changes icon to enabled', function (assert) {
     report.switchOff();
     report.switchOn();
 

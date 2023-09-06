@@ -25,6 +25,18 @@
     "message": "Eliminar errores",
     "description": "Etiqueta del botón para eliminar errores."
   },
+  "report": {
+    "message": "Reportar",
+    "description": "Report kind - group title."
+  },
+  "tabErrors": {
+    "message": "errores en la pestaña activa",
+    "description": "Errors in selected tab - radio button label."
+  },
+  "allErrors": {
+    "message": "todos los errores",
+    "description": "All errors - radio button label."
+  },
   "ignoreErrorsTitle": {
     "message": "Ignorar",
     "description": "Ignore errors group title."

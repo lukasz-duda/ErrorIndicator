@@ -25,6 +25,18 @@
     "message": "Remove errors",
     "description": "Label of button for removing errors."
   },
+  "report": {
+    "message": "Report",
+    "description": "Report kind - group title."
+  },
+  "tabErrors": {
+    "message": "errors in active tab",
+    "description": "Errors in selected tab - radio button label."
+  },
+  "allErrors": {
+    "message": "all errors",
+    "description": "All errors - radio button label."
+  },
   "ignoreErrorsTitle": {
     "message": "Ignore",
     "description": "Ignore errors group title."
